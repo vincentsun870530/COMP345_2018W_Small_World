@@ -292,7 +292,7 @@ void test11() {
 
 void test12()
 {		
-	cout << "Welcome to Small World" << endl;
+	cout << "Welcome to Small World!" << endl;
 
 	mapAndPlayers * mapPlayerPointer(new mapAndPlayers());
 
