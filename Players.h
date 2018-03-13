@@ -51,8 +51,8 @@ private:
 	int returnCurrentRaceTroop(int ID_Region);
 
 public:
-	vector<int> get_controlled_region_list() { return controlledRegionList };
-	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList };
+	vector<int> get_controlled_region_list() { return controlledRegionList; };
+	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList; };
 	void addTurnRegionConquerList(int ID_region);
 	void removeTurnRegionConquerList(int ID_region);
 	void clearTurnRegionConquerList(int ID_region) { turnRegionConquerList.clear(); }
