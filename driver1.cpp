@@ -385,7 +385,7 @@ void test13()
 
 	cout << "************************CONQUERS START***************************" << endl;
 
-	cout << "------------------------First Turn-------------------------------" << endl;
+	cout << "------------------------First Turn----------------------------------" << endl;
 
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
