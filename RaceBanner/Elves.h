@@ -35,6 +35,8 @@ public:
 
     void show() override;
 
+	void specialWithdraws(int ID_Region);
+
 
 };
 

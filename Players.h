@@ -135,6 +135,8 @@ public:
 
 	void scoringVictoryCoins();
 
+	void showPlayersAtTurnEnd();
+
 	int get_coin_1() const// added
 	{
 		return coin_1;

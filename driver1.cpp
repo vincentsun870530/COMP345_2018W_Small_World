@@ -393,6 +393,11 @@ void test13()
 		(*iter)->firstTurnAttack();
 	}
 
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->scoringVictoryCoins();
+	}
+
 	system("pause");
 
 	
@@ -401,6 +406,11 @@ void test13()
 	{
 		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
 		(*iter)->followingTurnAttack();
+	}
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->scoringVictoryCoins();
 	}
 
 	system("pause");

@@ -313,8 +313,11 @@ bool Players::isAttckableRegion(int ID_Region)
 
 void Players::loseAndWithdraws(int ID_Region)
 {
-	if (ptPlayersMap->getRegion(ID_Region)->get_owner() == (-1)) return;
-
+	if (ptPlayersMap->getRegion(ID_Region)->get_owner() == (-1))
+	{
+		ptPlayersMap->getRegion(ID_Region)->set_lost_tribe_count(0);
+		return;
+	}
 	int returnSoildier(0);
 
 	Players * playerToGetReturnSolider = ptPlayersPointerList->at(ptPlayersMap->getRegion(ID_Region)->get_owner());
@@ -326,7 +329,14 @@ void Players::loseAndWithdraws(int ID_Region)
 		ptPlayersMap->getRegion(ID_Region)->set_owner(-1);
 		ptPlayersMap->getRegion(ID_Region)->set_solider_current_race(0);
 		playerToGetReturnSolider->set_in_hand_solider_current_race(playerToGetReturnSolider->get_in_hand_solider_current_race() + returnSoildier - 1);
-		if (containRegionID(&(playerToGetReturnSolider->get_controlled_region_list()), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
+		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
+		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
+		printRegionList(tempVector);
+		tempVector.clear();
+		tempVector.shrink_to_fit();
+		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
+		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
+		printRegionList(tempVector);
 	}
 	else if (ptPlayersMap->getRegion(ID_Region)->get_solider_declined_race()>0)
 	{
@@ -335,7 +345,14 @@ void Players::loseAndWithdraws(int ID_Region)
 		ptPlayersMap->getRegion(ID_Region)->set_owner(-1);
 		ptPlayersMap->getRegion(ID_Region)->set_solider_declined_race(0);
 		playerToGetReturnSolider->set_in_hand_solider_declined_race(playerToGetReturnSolider->get_in_hand_solider_declined_race() + returnSoildier - 1);
-		if (containRegionID(&(playerToGetReturnSolider->get_turn_region_conquer_list()), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
+		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
+		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
+		printRegionList(tempVector);
+		tempVector.clear();
+		tempVector.shrink_to_fit();
+		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
+		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
+		printRegionList(tempVector);
 	}
 }
 
@@ -354,7 +371,7 @@ void Players::normalDeploy()
 
 		for (auto iter = currentControlRegionList.begin(); iter != currentControlRegionList.end(); ++iter)
 		{
-			if (ptPlayersMap->getRegion(*iter)->get_solider_current_race())
+			if (ptPlayersMap->getRegion(*iter)->get_solider_current_race() > 0)
 			{
 				numTempReturnSolidier = ptPlayersMap->getRegion(*iter)->get_solider_current_race() - 1;
 				ptPlayersMap->getRegion(*iter)->set_solider_current_race(1);
@@ -384,7 +401,7 @@ void Players::normalDeploy()
 				std::cout << "Please input the number of active race soliders you would like to put in Region " << (*iter) << " : " << endl;
 				int tempUserInputInt = get_correct_inputNumberOfChoice(0, this->get_in_hand_solider_current_race());
 
-				ptPlayersMap->getRegion(*iter)->set_solider_current_race(tempUserInputInt);
+				ptPlayersMap->getRegion(*iter)->set_solider_current_race(tempUserInputInt + ptPlayersMap->getRegion(*iter)->get_solider_current_race());
 				this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() - tempUserInputInt);
 			}
 		}
@@ -395,7 +412,7 @@ void Players::normalDeploy()
 
 int Players::normalBonusCount()
 {
-	return (controlledRegionList.size() + turnRegionConquerList.size());
+	return (static_cast<int>(controlledRegionList.size()) + static_cast<int>(turnRegionConquerList.size()));
 }
 
 void Players::BonusCount()
@@ -654,18 +671,20 @@ int Players::normalConquerForceDemandCount(int ID_Region)
 
 void Players::firstTurnAttack()
 {
+	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
 	int attackRegionID = getFirstTimeAttackRegionFromUser();
 
 	int neededTroopCountForSpecificRegion = normalConquerForceDemandCount(attackRegionID) +
 		this->get_current_race()->conquerForceDemandCount(attackRegionID) +
 		this->get_current_power()->conquerForceDemandCount(attackRegionID);
 
-	if (ptPlayersMap->getRegion(attackRegionID)->get_owner() != -1)
-	{
-		Players* tempPlayer = ptPlayersPointerList->at(ptPlayersMap->getRegion(attackRegionID)->get_owner());
-		tempPlayer->loseAndWithdraws(attackRegionID);
-	}
-	else loseAndWithdraws(attackRegionID);
+	//if (ptPlayersMap->getRegion(attackRegionID)->get_owner() != -1)
+	//{
+	//	Players* tempPlayer = ptPlayersPointerList->at(ptPlayersMap->getRegion(attackRegionID)->get_owner());
+	//	tempPlayer->loseAndWithdraws(attackRegionID);
+	//}
+	//else 
+		loseAndWithdraws(attackRegionID);
 
 	this->get_current_race()->alternativeExchangeAttack(attackRegionID);
 	this->get_current_power()->alternativeSpecialAttack(attackRegionID);
@@ -700,6 +719,7 @@ void Players::firstTurnAttack()
 
 		if (this->get_in_hand_solider_current_race() > neededTroopCountForSpecificRegion)
 		{
+			loseAndWithdraws(attackRegionID);
 			this->get_current_race()->alternativeExchangeAttack(attackRegionID);
 			this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 			normalAttack(attackRegionID, neededTroopCountForSpecificRegion);
@@ -713,6 +733,7 @@ void Players::firstTurnAttack()
 
 			if (this->get_in_hand_solider_current_race() + tempDiceNumber >= neededTroopCountForSpecificRegion)
 			{
+				loseAndWithdraws(attackRegionID);
 				this->get_current_race()->alternativeExchangeAttack(attackRegionID);
 				this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
@@ -727,7 +748,7 @@ void Players::firstTurnAttack()
 	this->get_current_power()->specialDeployAfterAttack();
 	this->get_current_race()->specialDeploy();
 	this->normalDeploy();
-	this->scoringVictoryCoins();
+	
 
 	if (this->get_current_race()->getRaceName() == static_cast<string>("Stout"))
 	{
@@ -826,6 +847,7 @@ void Players::followingTurnAttack()  //*****************************************
 	//normalAttack(attackRegionID, neededTroopCountForSpecificRegion);
 	//this->get_current_race()->afterAttackRetrealt();
 
+	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
 	readyTroop();
 	if (this->get_declined_race()) this->get_declined_race()->readyDeclinedTroop();
 
@@ -872,12 +894,12 @@ void Players::followingTurnAttack()  //*****************************************
 				}
 				else
 				{
-					ptPlayersPointerList->at(beatenPlayer)->loseAndWithdraws(attackRegionID);
+					loseAndWithdraws(attackRegionID);
 				}
 			}
 			else
 			{
-				ptPlayersMap->getRegion(attackRegionID)->set_lost_tribe_count(0);
+				loseAndWithdraws(attackRegionID);
 			}
 
 			this->get_current_race()->alternativeExchangeAttack(attackRegionID);
@@ -905,12 +927,12 @@ void Players::followingTurnAttack()  //*****************************************
 					}
 					else
 					{
-						ptPlayersPointerList->at(beatenPlayer)->loseAndWithdraws(attackRegionID);
+						loseAndWithdraws(attackRegionID);
 					}
 				}
 				else
 				{
-					ptPlayersMap->getRegion(attackRegionID)->set_lost_tribe_count(0);
+					loseAndWithdraws(attackRegionID);
 				}
 
 				this->get_current_race()->alternativeExchangeAttack(attackRegionID);
@@ -1010,11 +1032,51 @@ void Players::scoringVictoryCoins()
 
 	std::cout << "In this turn, Player " << this->ID_player << " achieves " << tempTotalAmount << " coins." << endl;
 
-	//vector <int> controlledRegionList;
-	//vector<int > adjacentRegionList;
-	//vector<int > turnRegionConquerList;
-
 	controlledRegionList.insert(controlledRegionList.end(), turnRegionConquerList.begin(), turnRegionConquerList.end());
+	if (controlledRegionList.size() != 0) sort(controlledRegionList.begin(), controlledRegionList.end());
 	turnRegionConquerList.clear();
-	controlledRegionList.shrink_to_fit();
+	turnRegionConquerList.shrink_to_fit();
+	showPlayersAtTurnEnd();
+}
+
+void Players::showPlayersAtTurnEnd()
+{
+	std::cout << "****************************************************************************************************\n" << endl;
+	
+	for(auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		std::cout << "After this turn, Player " << (*iter)->get_id_player() << " control Region : ";
+		vector<int> tempVector((*iter)->get_controlled_region_list());
+		printRegionList(tempVector);
+		std::cout << "\n"<< std::endl;
+
+		if ((*iter)->get_current_race() != nullptr)
+		{
+			int totalSolider = 0;
+			for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+			{
+				if (ptPlayersMap->getRegion(i)->get_cu_race_name() == (*iter)->get_current_race()->getRaceName()) totalSolider += ptPlayersMap->getRegion(i)->get_solider_current_race();
+			}
+
+			std::cout << "currently has " << totalSolider << " soliders in defending and ";
+			totalSolider += (*iter)->get_in_hand_solider_current_race();
+			std::cout << (*iter)->get_in_hand_solider_current_race() << " soliders in hand. " << "In total " << totalSolider << " soliders in active status. \n" << std::endl;
+		}
+		
+		if ((*iter)->get_declined_race() != nullptr)
+		{
+			int totalSolider = 0;
+			for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+			{
+				if (ptPlayersMap->getRegion(i)->get_de_race_name() == (*iter)->get_declined_race()->getRaceName()) totalSolider += ptPlayersMap->getRegion(i)->get_solider_declined_race();
+			}
+
+			std::cout << "currently has " << totalSolider << " soliders in defending and ";
+			totalSolider += (*iter)->get_in_hand_solider_declined_race();
+			std::cout << (*iter)->get_in_hand_solider_declined_race() << " soliders in hand. " << "In total " << totalSolider << " soliders in active status. " << std::endl;
+		}
+	}
+
+	
+	std::cout << "****************************************************************************************************\n" << endl;
 }

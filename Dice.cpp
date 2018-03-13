@@ -16,7 +16,7 @@ int Dice::rollingDice(bool showResult = false) {
 	rollNumber =  rand() % 6 ;
 	returnNUmber = (rollNumber / 3) * (rollNumber % 3 + 1);
 	
-	cout << "you get a rollNumber " << rollNumber << " this time. " << endl;
+	//cout << "you get a rollNumber " << rollNumber << " this time. " << endl;
 
 	if (returnNUmber) {
 		if (returnNUmber == 1) {r1Times++, r1Percentage = (double)r1Times / rollingTimes *100 ;}

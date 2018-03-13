@@ -3,6 +3,7 @@
 //
 
 #include "Elves.h"
+#include "../Players.h"
 
 Elves::Elves() : RaceBanner() {
     raceName_ = "Elves";
@@ -50,3 +51,9 @@ void Elves::startRacePowerForToken(int tempToken) {
 void Elves::show() {
     RaceBanner::show();
 }
+
+void Elves::specialWithdraws(int ID_Region)
+{
+	this->get_point_player()->loseAndWithdraws(ID_Region);
+	this->get_point_player()->set_in_hand_solider_current_race(this->get_point_player()->get_in_hand_solider_current_race() + 1);
+};
