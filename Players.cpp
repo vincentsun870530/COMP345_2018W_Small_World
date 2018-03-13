@@ -294,13 +294,16 @@ void Players::loseAndWithdraws(int ID_Region)
 
 	int returnSoildier(0);
 
+	Players * playerToGetReturnSolider = ptPlayersPointerList->at(ptPlayersMap->getRegion(ID_Region)->get_owner());
+
 	if (ptPlayersMap->getRegion(ID_Region)->get_solider_current_race()>0)
 	{
 		returnSoildier = ptPlayersMap->getRegion(ID_Region)->get_solider_current_race();
 		ptPlayersMap->getRegion(ID_Region)->set_cu_race_name("");
 		ptPlayersMap->getRegion(ID_Region)->set_owner(-1);
 		ptPlayersMap->getRegion(ID_Region)->set_solider_current_race(0);
-		this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race()+returnSoildier-1);
+		playerToGetReturnSolider->set_in_hand_solider_current_race(playerToGetReturnSolider->get_in_hand_solider_current_race() + returnSoildier - 1);
+		if (containRegionID(&(playerToGetReturnSolider->get_controlled_region_list()), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
 	}
 	else if (ptPlayersMap->getRegion(ID_Region)->get_solider_declined_race()>0)
 	{
@@ -308,12 +311,9 @@ void Players::loseAndWithdraws(int ID_Region)
 		ptPlayersMap->getRegion(ID_Region)->set_de_race_name("");
 		ptPlayersMap->getRegion(ID_Region)->set_owner(-1);
 		ptPlayersMap->getRegion(ID_Region)->set_solider_declined_race(0);
-		this->set_in_hand_solider_declined_race(this->get_in_hand_solider_current_race()+returnSoildier-1);
+		playerToGetReturnSolider->set_in_hand_solider_declined_race(playerToGetReturnSolider->get_in_hand_solider_declined_race() + returnSoildier - 1);
+		if (containRegionID(&(playerToGetReturnSolider->get_turn_region_conquer_list()), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
 	}
-
-	if (containRegionID(&controlledRegionList, ID_Region)) removeControlledRegionID(ID_Region);
-	if (containRegionID(&turnRegionConquerList, ID_Region)) removeTurnRegionConquerList(ID_Region);
-	
 }
 
 
