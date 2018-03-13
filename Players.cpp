@@ -242,6 +242,8 @@ void Players::pick_race() {
 
 void Players::pick_race(int ID_RaceOrBadge)
 {
+	reduceCoinForRaceSelection(ID_RaceOrBadge);
+
 	set_current_race(raceBannerVector->at(ID_RaceOrBadge));
 	raceBannerVector->at(ID_RaceOrBadge)->set_is_available(false);
 	raceBannerVector->at(ID_RaceOrBadge)->set_point_player(this);
@@ -258,9 +260,30 @@ void Players::pick_race(int ID_RaceOrBadge)
 	else if (currentPower->getbadgesName() == (static_cast<string>("Fortified"))) set_in_hand_fortresses(6);
 	else if (currentPower->getbadgesName() == (static_cast<string>("Heroic"))) set_in_handhero(2);
 	else if (currentRace->getRaceName() == (static_cast<string>("Trolls"))) set_in_hand_troll_lairs(10);
-	
-	std::cout << "Player " << this->get_id_player() << " chosed NO." << ID_RaceOrBadge << " race and badges !"<< endl;
+
+	std::cout << "Player " << this->get_id_player() << " chosed NO." << ID_RaceOrBadge << " race and badges !" << endl;
 	std::cout << "**********************************************************************************************" << endl;
+}
+
+void Players::reduceCoinForRaceSelection(int ID_RaceOrBadge)
+{
+	int reductionNumber = raceSelectCoinReduction(ID_RaceOrBadge);
+	for (int i = 0; i < reductionNumber; i++)
+	{
+		reduce_coin_1();
+	}
+};
+
+int Players::raceSelectCoinReduction(int ID_RaceOrBadge)
+{
+	int reductionNumber = 0;
+	for (auto iter = raceBannerVector->begin(); iter != raceBannerVector->end(); ++iter)
+	{
+		if ((*iter)->get_id_race() == ID_RaceOrBadge) break;
+		if ((*iter)->is_available()) reductionNumber++;
+	}
+
+	return reductionNumber;
 }
 
 bool Players::isAttckableRegion(int ID_Region)
@@ -398,12 +421,19 @@ void Players::add_coin_1()
 
 }
 
+void Players::reduce_coin_1() 
+{
+	coin_1--;
+	coin1++;
+	exchangeCoin();
+}
+
 
 void Players::exchangeCoin()
 
 {
 
-	if (coin_1 < 5) return;
+	if ((coin_1 < 5)&&(coin_1 >= 0)) return;
 
 
 

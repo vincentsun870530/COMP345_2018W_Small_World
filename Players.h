@@ -131,6 +131,7 @@ public:
 
 	void readyTroop(); //added
 	void add_coin_1();
+	void reduce_coin_1();
 
 	void scoringVictoryCoins();
 
@@ -185,6 +186,10 @@ public:
 	void set_current_power(Badges* const current_power);// added
 
 	void pick_race(int i); //overloaded
+
+	void reduceCoinForRaceSelection(int ID_RaceOrBadge); //added
+
+	int raceSelectCoinReduction(int ID_RaceOrBadge); //added
 
 	void pick_race();// added
 
