@@ -73,7 +73,7 @@ Map::Map(int n, bool dft) {
 	add_edge(11, 12, gra);
 	add_edge(11, 16, gra);
 	add_edge(11, 17, gra);
-	add_edge(11, 12, gra);
+	//add_edge(11, 12, gra);
 	add_edge(12, 13, gra);
 	add_edge(12, 17, gra);
 	add_edge(12, 18, gra);
@@ -93,7 +93,7 @@ Map::Map(int n, bool dft) {
 	add_edge(20, 21, gra);
 	add_edge(20, 22, gra);
 	add_edge(21, 22, gra);
-	add_edge(20, 21, gra);
+	//add_edge(20, 21, gra); 
 
 	add_edge(3, 5, gra);
 	add_edge(3, 14, gra);
@@ -162,15 +162,18 @@ Map::Map(int n, bool dft) {
 	getRegion(3)->set_is_at_boundary_of_map(1);
 	getRegion(4)->set_is_at_boundary_of_map(1);
 	getRegion(5)->set_is_at_boundary_of_map(1);
+	getRegion(10)->set_is_at_boundary_of_map(1);
 	getRegion(11)->set_is_at_boundary_of_map(1);
+	getRegion(15)->set_is_at_boundary_of_map(1);
 	getRegion(16)->set_is_at_boundary_of_map(1);
 	getRegion(17)->set_is_at_boundary_of_map(1);
 	getRegion(18)->set_is_at_boundary_of_map(1);
 	getRegion(19)->set_is_at_boundary_of_map(1);
 	getRegion(20)->set_is_at_boundary_of_map(1);
+	getRegion(21)->set_is_at_boundary_of_map(1);
 	getRegion(22)->set_is_at_boundary_of_map(1);
-	getRegion(15)->set_is_at_boundary_of_map(1);
-	getRegion(10)->set_is_at_boundary_of_map(1);
+	
+	
 
 	getRegion(1)->set_adjacent_mountain_count(1);
 	getRegion(6)->set_adjacent_mountain_count(1);
