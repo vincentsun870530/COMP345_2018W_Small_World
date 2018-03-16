@@ -590,25 +590,39 @@ vector<int> Players::getFirstTimeAvailableAttackRegion()
 		return tempAdjRegionIDVector;
 	}
 
-	{
+	
+		//int j = 0;
+		/*ptPlayersMap->getRegion(21)->printRegion();
+		cout << ptPlayersMap->getRegion(21)->get_is_at_boundary_of_map() << "-------";
+		cout << ptPlayersMap->getRegion(21)->get_coastal_region_count() << endl;*/
 		for (int i = 0; i < ptPlayersMap->getNumRegion(); i++) {
-			if ((ptPlayersMap->getRegion(i)->get_is_at_boundary_of_map() == 1) && (ptPlayersMap->getRegion(i)->get_coastal_region_count() != 1))
+
+
+			if ((ptPlayersMap->getRegion(i)->get_is_at_boundary_of_map() == 1) && (ptPlayersMap->getRegion(i)->get_coastal_region_count() != 1)) {
+				//j++;
+				//cout << j << "  "<< i << endl;
+	
 				tempAdjRegionIDVector.push_back(i);
+			}
 			else if ((ptPlayersMap->getRegion(i)->get_is_at_boundary_of_map() == 1) && (ptPlayersMap->getRegion(i)->get_coastal_region_count() == 1) && (this->get_current_race()->getRaceName() == static_cast<string>("Seafaring")))
 				tempAdjRegionIDVector.push_back(i);
+			
 		}
 		if (tempAdjRegionIDVector.size() != 0) sort(tempAdjRegionIDVector.begin(), tempAdjRegionIDVector.end());
+		//cout << "Region size return is " << tempAdjRegionIDVector.size() << endl; // test region vector size
 		return tempAdjRegionIDVector;
-	}
+	
 }
 
 void Players::printRegionList(vector<int> & inputVector)
 {
 	if (inputVector.size() == 0) return;
 
-	for (auto iter = inputVector.begin(); iter != inputVector.end(); ++iter)
+	//cout << inputVector.size() << endl; // input vector size wrong 
+
+	for (auto iter = inputVector.begin(); iter != inputVector.end(); iter++)
 	{
-		std::cout << "    " << *iter << "  ";
+		std::cout << "    " << *iter << "   ";
 	}
 	std::cout << endl;
 }
@@ -623,7 +637,7 @@ void Players::showAvailableAttackRegion(vector<int> & inputVector)
 
 int Players::getFirstTimeAttackRegionFromUser()
 {
-	vector<int>  tempRegionIDVector(getFirstTimeAvailableAttackRegion());
+	vector<int> tempRegionIDVector(getFirstTimeAvailableAttackRegion());
 
 	showAvailableAttackRegion(tempRegionIDVector);
 
