@@ -359,6 +359,7 @@ void Players::loseAndWithdraws(int ID_Region)
 
 void Players::normalDeploy()
 {
+	std::cout << "\nNow please deploy your solider for defence: \n" << std::endl;
 	vector<int> currentControlRegionList;
 
 	if (!controlledRegionList.empty()) currentControlRegionList.insert(currentControlRegionList.end(), controlledRegionList.begin(), controlledRegionList.end());
@@ -405,8 +406,21 @@ void Players::normalDeploy()
 				this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() - tempUserInputInt);
 			}
 		}
+		showTroopStatusAfterDeploy(currentControlRegionList);
+
 		std::cout << "Your finish redeploy!" << endl;
 		std::cout << endl;
+	}
+}
+
+
+void showTroopStatusAfterDeploy(vector<int> & inputControlList)
+{
+	if (inputControlList.size() == 0) return;
+
+	for (auto iter = inputControlList.begin(); iter != inputControlList.end(); ++iter)
+	{
+		std::cout << "Region " << (*iter) << " , Solider number: " << ptPlayersMap->getRegion(*iter)->get_solider_current_race() << endl;
 	}
 }
 
@@ -763,6 +777,7 @@ void Players::firstTurnAttack()
 	}
 	
 	std::cout << "this is the end of the playing of player " << this->get_id_player() << " in this turn . " <<endl;
+	std::cout << "\n****************************************************************************************************\n" << endl;
 	
 }
 

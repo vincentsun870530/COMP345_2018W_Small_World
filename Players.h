@@ -15,7 +15,7 @@
 class RaceBanner;
 class Badges;
 
-
+void showTroopStatusAfterDeploy(vector<int> & inputControlList);
 
 class Players {
 
