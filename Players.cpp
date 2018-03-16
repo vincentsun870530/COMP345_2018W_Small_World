@@ -87,6 +87,7 @@ void Players::conquers(Region region) {
 void Players::addControlledRegionID(int ID_region)
 {
 	controlledRegionList.push_back(ID_region);
+	sort(controlledRegionList.begin(), controlledRegionList.end());
 }
 
 void Players::removeControlledRegionID(int ID_region)
@@ -177,6 +178,8 @@ void Players::updateAdjacentRegionID()
 	}
 
 	sort(adjacentRegionList.begin(), adjacentRegionList.end());
+
+	adjacentRegionList.shrink_to_fit();
 }
 
 void Players::addTurnRegionConquerList(int ID_region)
@@ -331,12 +334,12 @@ void Players::loseAndWithdraws(int ID_Region)
 		playerToGetReturnSolider->set_in_hand_solider_current_race(playerToGetReturnSolider->get_in_hand_solider_current_race() + returnSoildier - 1);
 		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 		tempVector.clear();
 		tempVector.shrink_to_fit();
 		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 	}
 	else if (ptPlayersMap->getRegion(ID_Region)->get_solider_declined_race()>0)
 	{
@@ -347,12 +350,12 @@ void Players::loseAndWithdraws(int ID_Region)
 		playerToGetReturnSolider->set_in_hand_solider_declined_race(playerToGetReturnSolider->get_in_hand_solider_declined_race() + returnSoildier - 1);
 		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 		tempVector.clear();
 		tempVector.shrink_to_fit();
 		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 	}
 }
 
@@ -406,12 +409,14 @@ void Players::normalDeploy()
 			}
 		}
 		std::cout << "Your finish redeploy!" << endl;
-		std::cout << endl;
+		std::cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
 	}
 }
 
 int Players::normalBonusCount()
 {
+	controlledRegionList.shrink_to_fit();
+	turnRegionConquerList.shrink_to_fit();
 	return (static_cast<int>(controlledRegionList.size()) + static_cast<int>(turnRegionConquerList.size()));
 }
 
@@ -600,7 +605,7 @@ vector<int> Players::getFirstTimeAvailableAttackRegion()
 	
 }
 
-void Players::printRegionList(vector<int> & inputVector)
+ void printRegionList(vector<int> & inputVector)
 {
 	if (inputVector.size() == 0) return;
 
@@ -616,8 +621,8 @@ void Players::printRegionList(vector<int> & inputVector)
 void Players::showAvailableAttackRegion(vector<int> & inputVector)
 {
 	vector<int>  tempRegionIDVector(inputVector);
-	cout << "You have " << this->get_in_hand_solider_current_race() << " tokens for this turn" << endl;
-	std::cout << "The current available regions for your attack are: " << endl;
+	cout << "\nYou have " << this->get_in_hand_solider_current_race() << " tokens for this turn" << endl;
+	std::cout << "\nThe current available regions for your attack are: " << endl;
 	printRegionList(tempRegionIDVector);
 }
 
@@ -777,6 +782,7 @@ void Players::firstTurnAttack()
 	}
 	
 	std::cout << "this is the end of the playing of player " << this->get_id_player() << " in this turn . " <<endl;
+	std::cout << "#####################################################################\n" << endl;
 	
 }
 
@@ -896,7 +902,7 @@ void Players::followingTurnAttack()  //*****************************************
 			this->get_current_power()->conquerForceDemandCount(attackRegionID);
 
 
-		if ((this->get_in_hand_solider_current_race()) > neededTroopCountForSpecificRegion)
+		if ((this->get_in_hand_solider_current_race()) >= neededTroopCountForSpecificRegion)
 		{
 			int beatenPlayer = -1;
 			beatenPlayer = ptPlayersMap->getRegion(attackRegionID)->get_owner();
@@ -924,7 +930,7 @@ void Players::followingTurnAttack()  //*****************************************
 		}
 		else
 		{
-			std::cout << "you have not enough soliders in hand, so a dice play is needed! " << endl;
+			std::cout << "you have not enough soliders in hand, " << " you need " << neededTroopCountForSpecificRegion << " soliders to conquer this region, so a dice play is needed! " << endl;
 			int tempDiceNumber = dice.rollingDice(true);
 
 			if (this->get_in_hand_solider_current_race() + tempDiceNumber >= neededTroopCountForSpecificRegion)
@@ -954,6 +960,7 @@ void Players::followingTurnAttack()  //*****************************************
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
 				this->get_current_race()->afterAttackRetrealt();
 			}
+			else std::cout << "Unfortinutely, Soliders form dice are not enough!" << std::endl;
 			outerRepeat = false;
 		}
 	} while (outerRepeat);
@@ -1042,18 +1049,18 @@ void Players::abandonAreas()
 void Players::scoringVictoryCoins()
 {
 	BonusCount();
+
 	int tempTotalAmount = this->get_coin_1() + this->get_coin_3() * 3 + this->get_coin_5() * 5 + this->get_coin_10() * 10;
 
-	std::cout << "In this turn, Player " << this->ID_player << " achieves " << tempTotalAmount << " coins." << endl;
+	std::cout << "After this turn, Player " << this->ID_player << " have " << tempTotalAmount << " coins." << endl;
 
 	controlledRegionList.insert(controlledRegionList.end(), turnRegionConquerList.begin(), turnRegionConquerList.end());
 	if (controlledRegionList.size() != 0) sort(controlledRegionList.begin(), controlledRegionList.end());
 	turnRegionConquerList.clear();
 	turnRegionConquerList.shrink_to_fit();
-	showPlayersAtTurnEnd();
 }
 
-void Players::showPlayersAtTurnEnd()
+void showPlayersAtTurnEnd()
 {
 	std::cout << "****************************************************************************************************\n" << endl;
 	

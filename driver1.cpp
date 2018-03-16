@@ -264,6 +264,7 @@ extern std::vector<RaceBanner *> * raceBannerVector;
 extern std::vector<Badges *> * specialPowerBadgesVector;
 
 
+
 void test11() {
 
 	cout << "Welcome to Small World" << endl;
@@ -389,6 +390,7 @@ void test13()
 
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
+		std::cout << "************************************************************************************ " << endl;
 		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
 		(*iter)->firstTurnAttack();
 	}
@@ -397,6 +399,8 @@ void test13()
 	{
 		(*iter)->scoringVictoryCoins();
 	}
+	
+	showPlayersAtTurnEnd();
 
 	system("pause");
 
@@ -413,6 +417,7 @@ void test13()
 		(*iter)->scoringVictoryCoins();
 	}
 
+	showPlayersAtTurnEnd();
 	system("pause");
 }
 

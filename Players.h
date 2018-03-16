@@ -15,7 +15,8 @@
 class RaceBanner;
 class Badges;
 
-
+void showPlayersAtTurnEnd();
+ void printRegionList(vector<int> & inputVector);
 
 class Players {
 
@@ -47,10 +48,11 @@ private:
 	int inHandhero = 0;
 	int inHandDragon = 0;
 
-	void printRegionList(vector<int> & inputVector);
+	
 	int returnCurrentRaceTroop(int ID_Region);
 
 public:
+	
 	vector<int> get_controlled_region_list() { return controlledRegionList; };
 	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList; };
 	void addTurnRegionConquerList(int ID_region);
@@ -135,7 +137,7 @@ public:
 
 	void scoringVictoryCoins();
 
-	void showPlayersAtTurnEnd();
+	
 
 	int get_coin_1() const// added
 	{
