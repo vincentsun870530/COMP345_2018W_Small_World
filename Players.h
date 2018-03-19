@@ -15,7 +15,11 @@
 class RaceBanner;
 class Badges;
 
+
 void showTroopStatusAfterDeploy(vector<int> & inputControlList);
+void showPlayersAtTurnEnd();
+void printRegionList(vector<int> & inputVector);
+
 
 class Players {
 
@@ -47,10 +51,14 @@ private:
 	int inHandhero = 0;
 	int inHandDragon = 0;
 
-	void printRegionList(vector<int> & inputVector);
+	bool alreadyCountedBouns = false;
+
+	int playerTotalCoins = 0;
+
 	int returnCurrentRaceTroop(int ID_Region);
 
 public:
+	
 	vector<int> get_controlled_region_list() { return controlledRegionList; };
 	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList; };
 	void addTurnRegionConquerList(int ID_region);
@@ -115,7 +123,9 @@ public:
 
 	void firstTurnAttack(); //added
 	void followingTurnAttack(); //added
-	bool attack(int ID_Region); //added
+	bool attack(int ID_Region);
+	void clearFormerDeclinedRaceSolider();
+	//added
 	void Decline(); //added
 	void abandonAreas(); //added
 	void BonusCount(); //added
@@ -135,7 +145,7 @@ public:
 
 	void scoringVictoryCoins();
 
-	void showPlayersAtTurnEnd();
+	
 
 	int get_coin_1() const// added
 	{
@@ -283,6 +293,26 @@ public:
 		void set_in_hand_dragon(const int in_hand_dragon)
 		{
 			inHandDragon = in_hand_dragon;
+		}
+
+		bool get_already_counted_bouns() const
+		{
+			return alreadyCountedBouns;
+		}
+
+		void set_already_counted_bouns(const bool already_counted_bouns)
+		{
+			alreadyCountedBouns = already_counted_bouns;
+		}
+
+		int  get_player_total_coins() const
+		{
+			return playerTotalCoins;
+		}
+
+		void set_player_total_coins(const int player_total_coins)
+		{
+			playerTotalCoins = player_total_coins;
 		}
 
 };

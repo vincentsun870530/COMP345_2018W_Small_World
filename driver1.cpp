@@ -264,6 +264,7 @@ extern std::vector<RaceBanner *> * raceBannerVector;
 extern std::vector<Badges *> * specialPowerBadgesVector;
 
 
+
 void test11() {
 
 	cout << "Welcome to Small World" << endl;
@@ -389,6 +390,7 @@ void test13()
 
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
+		std::cout << "************************************************************************************ " << endl;
 		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
 		(*iter)->firstTurnAttack();
 	}
@@ -397,23 +399,33 @@ void test13()
 	{
 		(*iter)->scoringVictoryCoins();
 	}
+	
+	showPlayersAtTurnEnd();
 
 	system("pause");
 
+	gameTurnMarker = 1;
+
+	do
+	{
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+			(*iter)->followingTurnAttack();
+		}
+
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->scoringVictoryCoins();
+		}
+
+		showPlayersAtTurnEnd();
+		gameTurnMarker++;
+
+		system("pause");
+	} while (gameTurnMarker != 10);
 	
 
-	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-	{
-		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
-		(*iter)->followingTurnAttack();
-	}
-
-	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-	{
-		(*iter)->scoringVictoryCoins();
-	}
-
-	system("pause");
 }
 
 int main() {
