@@ -1001,37 +1001,47 @@ void Players::abandonAreas()
 		{
 			std::cout << "Would you abandon Region " << (*iter) << " 1(yes) or 0(no) ? " << endl;
 
-			int userInputRegionID = -1;
 
-			std::cin >> userInputRegionID;
+			int answer;
+			int userInputRegionID = (*iter);
+			
+			std::cin >> answer;
 
-			if (static_cast<int>(userInputRegionID))
-			{
-				this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() + ptPlayersMap->getRegion(*iter)->get_solider_current_race());
-				ptPlayersMap->getRegion(*iter)->set_solider_current_race(0);
-				this->set_in_hand_solider_declined_race(this->get_in_hand_solider_declined_race() + ptPlayersMap->getRegion(*iter)->get_solider_declined_race());
-				ptPlayersMap->getRegion(*iter)->set_solider_declined_race(0);
-				ptPlayersMap->getRegion(*iter)->set_cu_race_name("");
-				ptPlayersMap->getRegion(*iter)->set_id_cu_race(-1);
-				ptPlayersMap->getRegion(*iter)->set_de_race_name("");
-				ptPlayersMap->getRegion(*iter)->set_id_de_race(-1);
-				ptPlayersMap->getRegion(*iter)->set_owner(-1);
-				this->set_in_hand_encampments(this->get_in_hand_encampments() + ptPlayersMap->getRegion(*iter)->get_encampments_count());
-				ptPlayersMap->getRegion(*iter)->set_encampments_count(0);
-				this->set_in_hand_fortresses(this->get_in_hand_fortresses() + ptPlayersMap->getRegion(*iter)->get_fortresses_count());
-				ptPlayersMap->getRegion(*iter)->set_fortresses_count(0);
-				this->set_in_hand_troll_lairs(this->get_in_hand_troll_lairs() + ptPlayersMap->getRegion(*iter)->get_troll_lairs_count());
-				ptPlayersMap->getRegion(*iter)->set_troll_lairs_count(0);
-				this->set_in_hand_hole_in_the_ground(this->get_in_hand_hole_in_the_ground() + ptPlayersMap->getRegion(*iter)->get_holes_in_the_ground_count());
-				ptPlayersMap->getRegion(*iter)->set_holes_in_the_ground_count(0);
-				this->set_in_hand_dragon(this->get_in_hand_dragon() + ptPlayersMap->getRegion(*iter)->get_dragon_count());
-				ptPlayersMap->getRegion(*iter)->set_dragon_count(0);
-				this->set_in_handhero(this->get_in_handhero() + ptPlayersMap->getRegion(*iter)->get_heroes_count());
-				ptPlayersMap->getRegion(*iter)->set_heroes_count(0);
+			if (answer == 1) {
 
-				iter = controlledRegionList.erase(iter);
+				if (static_cast<int>(userInputRegionID))
+				{
+					this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() + ptPlayersMap->getRegion(*iter)->get_solider_current_race());
+					ptPlayersMap->getRegion(*iter)->set_solider_current_race(0);
+					this->set_in_hand_solider_declined_race(this->get_in_hand_solider_declined_race() + ptPlayersMap->getRegion(*iter)->get_solider_declined_race());
+					ptPlayersMap->getRegion(*iter)->set_solider_declined_race(0);
+					ptPlayersMap->getRegion(*iter)->set_cu_race_name("");
+					ptPlayersMap->getRegion(*iter)->set_id_cu_race(-1);
+					ptPlayersMap->getRegion(*iter)->set_de_race_name("");
+					ptPlayersMap->getRegion(*iter)->set_id_de_race(-1);
+					ptPlayersMap->getRegion(*iter)->set_owner(-1);
+					this->set_in_hand_encampments(this->get_in_hand_encampments() + ptPlayersMap->getRegion(*iter)->get_encampments_count());
+					ptPlayersMap->getRegion(*iter)->set_encampments_count(0);
+					this->set_in_hand_fortresses(this->get_in_hand_fortresses() + ptPlayersMap->getRegion(*iter)->get_fortresses_count());
+					ptPlayersMap->getRegion(*iter)->set_fortresses_count(0);
+					this->set_in_hand_troll_lairs(this->get_in_hand_troll_lairs() + ptPlayersMap->getRegion(*iter)->get_troll_lairs_count());
+					ptPlayersMap->getRegion(*iter)->set_troll_lairs_count(0);
+					this->set_in_hand_hole_in_the_ground(this->get_in_hand_hole_in_the_ground() + ptPlayersMap->getRegion(*iter)->get_holes_in_the_ground_count());
+					ptPlayersMap->getRegion(*iter)->set_holes_in_the_ground_count(0);
+					this->set_in_hand_dragon(this->get_in_hand_dragon() + ptPlayersMap->getRegion(*iter)->get_dragon_count());
+					ptPlayersMap->getRegion(*iter)->set_dragon_count(0);
+					this->set_in_handhero(this->get_in_handhero() + ptPlayersMap->getRegion(*iter)->get_heroes_count());
+					ptPlayersMap->getRegion(*iter)->set_heroes_count(0);
+
+					iter = controlledRegionList.erase(iter);
+				}
+				else ++iter;
 			}
-			else ++iter;
+			else
+			{
+				cout << " you didn't reply yes " << endl;
+				++iter;
+			}
 		}
 		else ++iter;
 	}
