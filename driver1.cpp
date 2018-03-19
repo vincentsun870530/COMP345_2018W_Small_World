@@ -328,6 +328,21 @@ void test12()
 	cout << "Player initial coins:" << endl;
 	v->setPlayersCoin();
 
+	std::cout << "show lost tribe region: " << std::endl;
+	for(int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+	{
+		
+		if (ptPlayersMap->getRegion(i)->get_lost_tribe_count())
+			std::cout << "Region " << i << " has a lost tribe! " << std::endl;
+	}
+
+	std::cout << "show mountain region: " << std::endl;
+	for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+	{
+		
+		if (ptPlayersMap->getRegion(i)->get_mountain_count())
+			std::cout << "Region " << i << " has a mountain! " << std::endl;
+	}
 	system("pause");
 }
 
@@ -432,9 +447,9 @@ int main() {
 
 	//test11();
 
-	//test12();
+	test12();
 
-	test13();
+	//test13();
 
 	//test2();
 	//srand((unsigned)time(NULL));
