@@ -20,6 +20,16 @@ extern vector<Players *> * ptPlayersPointerList;
 extern std::vector<RaceBanner *> * raceBannerVector;
 extern std::vector<Badges *> * specialPowerBadgesVector;
 
+const string& Players::get_phaser() const
+{
+	return phaser;
+}
+
+void Players::set_phaser(const string& phaser)
+{
+	this->phaser = phaser;
+}
+
 Players::Players() {
 	token = 0;
 	coins = 5;
@@ -87,6 +97,7 @@ void Players::conquers(Region region) {
 void Players::addControlledRegionID(int ID_region)
 {
 	controlledRegionList.push_back(ID_region);
+	sort(controlledRegionList.begin(), controlledRegionList.end());
 }
 
 void Players::removeControlledRegionID(int ID_region)
@@ -177,6 +188,8 @@ void Players::updateAdjacentRegionID()
 	}
 
 	sort(adjacentRegionList.begin(), adjacentRegionList.end());
+
+	adjacentRegionList.shrink_to_fit();
 }
 
 void Players::addTurnRegionConquerList(int ID_region)
@@ -235,6 +248,7 @@ void Players::set_current_power(Badges* const current_power)
 
 void Players::pick_race() {
 
+	show6OrLessAvailableRacesBadges();
 	int i = getNumberInputForRace();
 	pick_race(i);
 }
@@ -318,7 +332,7 @@ void Players::loseAndWithdraws(int ID_Region)
 		ptPlayersMap->getRegion(ID_Region)->set_lost_tribe_count(0);
 		return;
 	}
-	int returnSoildier(0);
+	int returnSoildier = 0;
 
 	Players * playerToGetReturnSolider = ptPlayersPointerList->at(ptPlayersMap->getRegion(ID_Region)->get_owner());
 
@@ -331,12 +345,18 @@ void Players::loseAndWithdraws(int ID_Region)
 		playerToGetReturnSolider->set_in_hand_solider_current_race(playerToGetReturnSolider->get_in_hand_solider_current_race() + returnSoildier - 1);
 		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 		tempVector.clear();
 		tempVector.shrink_to_fit();
 		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
+		if (ptPlayersMap->getRegion(ID_Region)->get_solider_declined_race() > 0)
+		{
+			std::cout << "error, have both current race soliders and declined soliders in this region" << std::endl;
+			system("pause");
+		}
+		
 	}
 	else if (ptPlayersMap->getRegion(ID_Region)->get_solider_declined_race()>0)
 	{
@@ -347,18 +367,26 @@ void Players::loseAndWithdraws(int ID_Region)
 		playerToGetReturnSolider->set_in_hand_solider_declined_race(playerToGetReturnSolider->get_in_hand_solider_declined_race() + returnSoildier - 1);
 		vector<int> tempVector = playerToGetReturnSolider->get_controlled_region_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeControlledRegionID(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
 		tempVector.clear();
 		tempVector.shrink_to_fit();
 		tempVector = playerToGetReturnSolider->get_turn_region_conquer_list();
 		if (containRegionID((&tempVector), ID_Region)) playerToGetReturnSolider->removeTurnRegionConquerList(ID_Region);
-		printRegionList(tempVector);
+		//printRegionList(tempVector);
+
+		if (ptPlayersMap->getRegion(ID_Region)->get_solider_current_race()>0)
+		{
+			std::cout << "error, have both current race soliders and declined soliders in this region" << std::endl;
+			system("pause");
+		}
+			
 	}
 }
 
 
 void Players::normalDeploy()
 {
+	std::cout << "\nNow please deploy your solider for defence: \n" << std::endl;
 	vector<int> currentControlRegionList;
 
 	if (!controlledRegionList.empty()) currentControlRegionList.insert(currentControlRegionList.end(), controlledRegionList.begin(), controlledRegionList.end());
@@ -367,8 +395,6 @@ void Players::normalDeploy()
 	if (!currentControlRegionList.empty())
 	{
 		int numTempReturnSolidier(0);
-
-
 		for (auto iter = currentControlRegionList.begin(); iter != currentControlRegionList.end(); ++iter)
 		{
 			if (ptPlayersMap->getRegion(*iter)->get_solider_current_race() > 0)
@@ -405,13 +431,32 @@ void Players::normalDeploy()
 				this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() - tempUserInputInt);
 			}
 		}
+
+		sort(currentControlRegionList.begin(), currentControlRegionList.end());
+
+		showTroopStatusAfterDeploy(currentControlRegionList);
+
 		std::cout << "Your finish redeploy!" << endl;
-		std::cout << endl;
+		std::cout <<"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl;
+	}
+}
+
+
+void showTroopStatusAfterDeploy(vector<int> & inputControlList)
+{
+	if (inputControlList.size() == 0) return;
+
+	for (auto iter = inputControlList.begin(); iter != inputControlList.end(); ++iter)
+	{
+		std::cout << "Region " << (*iter) << " , active solider number: " << ptPlayersMap->getRegion(*iter)->get_solider_current_race() <<
+			" and   declined solider number: " << ptPlayersMap->getRegion(*iter)->get_solider_declined_race() << std::endl;
 	}
 }
 
 int Players::normalBonusCount()
 {
+	controlledRegionList.shrink_to_fit();
+	turnRegionConquerList.shrink_to_fit();
 	return (static_cast<int>(controlledRegionList.size()) + static_cast<int>(turnRegionConquerList.size()));
 }
 
@@ -514,6 +559,10 @@ void Players::normalAttack(int ID_Region, int solider_needed)
 	ptPlayersMap->getRegion(ID_Region)->set_cu_race_name(this->get_current_race()->getRaceName());
 	ptPlayersMap->getRegion(ID_Region)->set_id_cu_race(this->get_current_race()->get_id_race());
 	ptPlayersMap->getRegion(ID_Region)->set_solider_current_race(solider_needed);
+	ptPlayersMap->getRegion(ID_Region)->set_de_race_name("");
+	ptPlayersMap->getRegion(ID_Region)->set_id_de_race(-1);
+	ptPlayersMap->getRegion(ID_Region)->set_solider_declined_race(0);
+
 	this->set_in_hand_solider_current_race(this->get_in_hand_solider_current_race() - solider_needed);
 	this->addTurnRegionConquerList(ID_Region);
 
@@ -600,7 +649,7 @@ vector<int> Players::getFirstTimeAvailableAttackRegion()
 	
 }
 
-void Players::printRegionList(vector<int> & inputVector)
+ void printRegionList(vector<int> & inputVector)
 {
 	if (inputVector.size() == 0) return;
 
@@ -616,8 +665,8 @@ void Players::printRegionList(vector<int> & inputVector)
 void Players::showAvailableAttackRegion(vector<int> & inputVector)
 {
 	vector<int>  tempRegionIDVector(inputVector);
-	cout << "You have " << this->get_in_hand_solider_current_race() << " tokens for this turn" << endl;
-	std::cout << "The current available regions for your attack are: " << endl;
+	cout << "\nYou have " << this->get_in_hand_solider_current_race() << " tokens for this turn" << endl;
+	std::cout << "\nThe current available regions for your attack are: " << endl;
 	printRegionList(tempRegionIDVector);
 }
 
@@ -685,6 +734,7 @@ int Players::normalConquerForceDemandCount(int ID_Region)
 
 void Players::firstTurnAttack()
 {
+	notify();
 	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
 	int attackRegionID = getFirstTimeAttackRegionFromUser();
 
@@ -731,7 +781,7 @@ void Players::firstTurnAttack()
 			this->get_current_power()->conquerForceDemandCount(attackRegionID);
 		
 
-		if (this->get_in_hand_solider_current_race() > neededTroopCountForSpecificRegion)
+		if ((this->get_in_hand_solider_current_race() > 0) && ((this->get_in_hand_solider_current_race()) >= neededTroopCountForSpecificRegion))
 		{
 			loseAndWithdraws(attackRegionID);
 			this->get_current_race()->alternativeExchangeAttack(attackRegionID);
@@ -742,6 +792,8 @@ void Players::firstTurnAttack()
 		}
 		else 
 		{
+			std:cout << " This region demand at least " << neededTroopCountForSpecificRegion << " to conquer. " << endl;
+			std::cout << " you have only " << this->get_in_hand_solider_current_race() << " soliders in hand." << endl;
 			std::cout << "you have not enough soliders in hand, so a dice play is needed! " << endl;
 			int tempDiceNumber = dice.rollingDice(true);
 
@@ -752,8 +804,9 @@ void Players::firstTurnAttack()
 				this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
 				this->get_current_race()->afterAttackRetrealt();
+				cout << "\nAttack is done! Let's start deploy\n" << endl;
 			}
-			cout << "Attack is done! Let's start deploy" << endl;
+			cout << "\noops! still not enough soliders, now you need to deploy.  \n" << endl;
 			outerRepeat = false;
 		}
 	} while (outerRepeat);
@@ -763,26 +816,42 @@ void Players::firstTurnAttack()
 	this->get_current_race()->specialDeploy();
 	this->normalDeploy();
 	
-
-	if (this->get_current_race()->getRaceName() == static_cast<string>("Stout"))
-	{
-		int userInputInt = -1;
-		std::cout << "Do you need to declined immediately?  please input 1(yes) or 0(no) : " << endl;
-		std::cin >> userInputInt;
-
-		if (userInputInt)
-		{
-			this->Decline();
-		}
-	}
-	
+		
 	std::cout << "this is the end of the playing of player " << this->get_id_player() << " in this turn . " <<endl;
-	
+	std::cout << "\n****************************************************************************************************\n" << endl;
+	std::cout << "#####################################################################\n" << endl;
 }
 
 
+void Players::clearFormerDeclinedRaceSolider()
+{
+	for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+	{
+		if ((ptPlayersMap->getRegion(i)->get_owner() == this->get_id_player()) && (ptPlayersMap->getRegion(i)->get_solider_declined_race() > 0))
+		{
+			if (containRegionID(&controlledRegionList, i)) removeControlledRegionID(i);
+			if (containRegionID(&turnRegionConquerList, i)) removeTurnRegionConquerList(i);
+			ptPlayersMap->getRegion(i)->set_troll_lairs_count(0);
+			ptPlayersMap->getRegion(i)->set_fortresses_count(0);
+			ptPlayersMap->getRegion(i)->set_encampments_count(0);
+			ptPlayersMap->getRegion(i)->set_holes_in_the_ground_count(0);
+
+			ptPlayersMap->getRegion(i)->set_owner(-1);
+			ptPlayersMap->getRegion(i)->set_cu_race_name("");
+			ptPlayersMap->getRegion(i)->set_de_race_name("");
+			//ptPlayersMap->getRegion(i)->set_empty_region_count(1);
+			ptPlayersMap->getRegion(i)->set_solider_current_race(0);
+			ptPlayersMap->getRegion(i)->set_solider_declined_race(0);
+			ptPlayersMap->getRegion(i)->set_id_cu_race(-1);
+			ptPlayersMap->getRegion(i)->set_id_de_race(-1);
+		}
+	}
+}
+
 void Players::Decline()
 {
+	clearFormerDeclinedRaceSolider();
+
 	if (this->get_current_race()->getRaceName() == static_cast<string>("Ghouls"))
 	{
 		for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
@@ -796,7 +865,6 @@ void Players::Decline()
 				ptPlayersMap->getRegion(i)->set_id_de_race(ptPlayersMap->getRegion(i)->get_id_cu_race());
 				ptPlayersMap->getRegion(i)->set_id_cu_race(-1);
 				
-
 				ptPlayersMap->getRegion(i)->set_troll_lairs_count(0);
 				ptPlayersMap->getRegion(i)->set_fortresses_count(0);
 				ptPlayersMap->getRegion(i)->set_encampments_count(0);
@@ -808,19 +876,23 @@ void Players::Decline()
 	}
 	else
 	{
+		
 		for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
 		{
-			ptPlayersMap->getRegion(i)->set_de_race_name(ptPlayersMap->getRegion(i)->get_cu_race_name());
-			ptPlayersMap->getRegion(i)->set_solider_declined_race(1);
-			ptPlayersMap->getRegion(i)->set_cu_race_name("");
-			ptPlayersMap->getRegion(i)->set_solider_current_race(0);
-			ptPlayersMap->getRegion(i)->set_id_de_race(ptPlayersMap->getRegion(i)->get_id_cu_race());
-			ptPlayersMap->getRegion(i)->set_id_cu_race(-1);
+			if (ptPlayersMap->getRegion(i)->get_owner() == this->get_id_player())
+			{
+				ptPlayersMap->getRegion(i)->set_de_race_name(ptPlayersMap->getRegion(i)->get_cu_race_name());
+				ptPlayersMap->getRegion(i)->set_solider_declined_race(1);
+				ptPlayersMap->getRegion(i)->set_cu_race_name("");
+				ptPlayersMap->getRegion(i)->set_solider_current_race(0);
+				ptPlayersMap->getRegion(i)->set_id_de_race(ptPlayersMap->getRegion(i)->get_id_cu_race());
+				ptPlayersMap->getRegion(i)->set_id_cu_race(-1);
 
-			if (this->get_current_race()->getRaceName() != static_cast<string>("Trolls")) ptPlayersMap->getRegion(i)->set_troll_lairs_count(0);
-			ptPlayersMap->getRegion(i)->set_fortresses_count(0);
-			ptPlayersMap->getRegion(i)->set_encampments_count(0);
-			ptPlayersMap->getRegion(i)->set_holes_in_the_ground_count(0);
+				if (this->get_current_race()->getRaceName() != static_cast<string>("Trolls")) ptPlayersMap->getRegion(i)->set_troll_lairs_count(0);
+				ptPlayersMap->getRegion(i)->set_fortresses_count(0);
+				ptPlayersMap->getRegion(i)->set_encampments_count(0);
+				ptPlayersMap->getRegion(i)->set_holes_in_the_ground_count(0);
+			}
 		}
 		this->set_in_hand_solider_declined_race(0);//
 	}
@@ -843,26 +915,22 @@ void Players::Decline()
 void Players::followingTurnAttack()  //******************************************************************************************************************************************
 {
 
-	//int attackRegionID = getFirstTimeAttackRegionFromUser();
 
-	//int neededTroopCountForSpecificRegion = normalConquerForceDemandCount(attackRegionID) +
-	//	this->get_current_race()->conquerForceDemandCount(attackRegionID) +
-	//	this->get_current_power()->conquerForceDemandCount(attackRegionID);
+	int userInputInt1 = -1;
+	std::cout << "Do you need to declined immediately?  please input 1(yes) or 0(no) : " << endl;
+	std::cin >> userInputInt1;
 
-	//if (ptPlayersMap->getRegion(attackRegionID)->get_owner() != -1)
-	//{
-	//	Players* tempPlayer = ptPlayersPointerList->at(ptPlayersMap->getRegion(attackRegionID)->get_owner());
-	//	tempPlayer->loseAndWithdraws(attackRegionID);
-	//}
-	//else loseAndWithdraws(attackRegionID);
+	if (userInputInt1)
+	{
+		this->Decline();
+		return;
+	}
 
-	//this->get_current_race()->alternativeExchangeAttack(attackRegionID);
-	//this->get_current_power()->alternativeSpecialAttack(attackRegionID);
-	//normalAttack(attackRegionID, neededTroopCountForSpecificRegion);
-	//this->get_current_race()->afterAttackRetrealt();
 
-	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
 	readyTroop();
+	notify();
+	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
+	
 	if (this->get_declined_race()) this->get_declined_race()->readyDeclinedTroop();
 
 	abandonAreas();
@@ -896,7 +964,7 @@ void Players::followingTurnAttack()  //*****************************************
 			this->get_current_power()->conquerForceDemandCount(attackRegionID);
 
 
-		if ((this->get_in_hand_solider_current_race()) > neededTroopCountForSpecificRegion)
+		if ((this->get_in_hand_solider_current_race() > 0)&&((this->get_in_hand_solider_current_race()) >= neededTroopCountForSpecificRegion))
 		{
 			int beatenPlayer = -1;
 			beatenPlayer = ptPlayersMap->getRegion(attackRegionID)->get_owner();
@@ -922,8 +990,15 @@ void Players::followingTurnAttack()  //*****************************************
 			this->get_current_race()->afterAttackRetrealt();
 			outerRepeat = true;
 		}
+		else if (this->get_in_hand_solider_current_race() == 0) 
+		{
+		std:cout << "You now have 0 solider in hand! Not able to conquer any region." << std::endl;
+		outerRepeat = false;
+		}
 		else
 		{
+			std::cout << " This region demand at least " << neededTroopCountForSpecificRegion << " to conquer. " << endl;
+			std::cout << " you have only " << this->get_in_hand_solider_current_race() << " soliders in hand." << endl;
 			std::cout << "you have not enough soliders in hand, so a dice play is needed! " << endl;
 			int tempDiceNumber = dice.rollingDice(true);
 
@@ -953,7 +1028,9 @@ void Players::followingTurnAttack()  //*****************************************
 				this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
 				this->get_current_race()->afterAttackRetrealt();
+				cout << "\nAttack is done! Let's start deploy\n" << endl;
 			}
+			else std::cout << "oops, Soliders form dice are still not enough! you need  to redeploy now ." << std::endl;
 			outerRepeat = false;
 		}
 	} while (outerRepeat);
@@ -963,8 +1040,28 @@ void Players::followingTurnAttack()  //*****************************************
 	this->get_current_race()->specialDeploy();
 	this->normalDeploy();
 
+	if (this->get_current_race()->getRaceName() == static_cast<string>("Stout"))
+	{
+		int userInputInt = -1;
+		std::cout << "Do you need to declined immediately?  please input 1(yes) or 0(no) : " << endl;
+		std::cin >> userInputInt;
 
+		if (userInputInt)
+		{
+			this->Decline();
+			
+			BonusCount();
+
+			int tempTotalAmount = this->get_coin_1() + this->get_coin_3() * 3 + this->get_coin_5() * 5 + this->get_coin_10() * 10;
+
+			std::cout << "After this turn, Player " << this->ID_player << " have " << tempTotalAmount << " coins." << endl;
+
+			set_already_counted_bouns(true);
+		}
+	}
 }
+
+
 void Players::readyTroop()
 {
 	for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
@@ -987,27 +1084,29 @@ int Players::returnCurrentRaceTroop(int ID_Region)
 
 void Players::abandonAreas()
 {
-	if (controlledRegionList.size() == 0)
-	{
-		std::cout << " you have no area to abandon! " << endl;
-		return;
-	}
-	
-	for (auto iter = controlledRegionList.begin(); iter != controlledRegionList.end(); )
-	{
-		Region * tempRegion = ptPlayersMap->getRegion(*iter);
+	int userInputInt = -1;
+	std::cout << "Do you need to abandon some areas ?  please input 1(yes) or 0(no) : " << endl;
+	std::cin >> userInputInt;
 
-		if (tempRegion->get_owner() == this->get_id_player())
+	if (userInputInt)
+	{
+		if (controlledRegionList.size() == 0)
 		{
-			std::cout << "Would you abandon Region " << (*iter) << " 1(yes) or 0(no) ? " << endl;
+			std::cout << " you have no area to abandon! " << endl;
+			return;
+		}
 
+		for (auto iter = controlledRegionList.begin(); iter != controlledRegionList.end(); )
+		{
+			Region * tempRegion = ptPlayersMap->getRegion(*iter);
 
-			int answer;
-			int userInputRegionID = (*iter);
-			
-			std::cin >> answer;
+			if (tempRegion->get_owner() == this->get_id_player())
+			{
+				std::cout << "Would you abandon Region " << (*iter) << " 1(yes) or 0(no) ? " << endl;
 
-			if (answer == 1) {
+			int userInputRegionID = -1;
+
+				std::cin >> userInputRegionID;
 
 				if (static_cast<int>(userInputRegionID))
 				{
@@ -1037,33 +1136,33 @@ void Players::abandonAreas()
 				}
 				else ++iter;
 			}
-			else
-			{
-				cout << " you didn't reply yes " << endl;
-				++iter;
-			}
+			else ++iter;
 		}
-		else ++iter;
+		controlledRegionList.shrink_to_fit();
 	}
-
-	controlledRegionList.shrink_to_fit();
+	else return;
 }
 
 void Players::scoringVictoryCoins()
 {
-	BonusCount();
+	if (!get_already_counted_bouns())
+	{
+		BonusCount();
+	}
+
 	int tempTotalAmount = this->get_coin_1() + this->get_coin_3() * 3 + this->get_coin_5() * 5 + this->get_coin_10() * 10;
 
-	std::cout << "In this turn, Player " << this->ID_player << " achieves " << tempTotalAmount << " coins." << endl;
+	set_player_total_coins( get_player_total_coins() + tempTotalAmount);
+
+	std::cout << "After this turn, Player " << this->ID_player << " have " << tempTotalAmount << " coins." << endl;
 
 	controlledRegionList.insert(controlledRegionList.end(), turnRegionConquerList.begin(), turnRegionConquerList.end());
 	if (controlledRegionList.size() != 0) sort(controlledRegionList.begin(), controlledRegionList.end());
 	turnRegionConquerList.clear();
 	turnRegionConquerList.shrink_to_fit();
-	showPlayersAtTurnEnd();
 }
 
-void Players::showPlayersAtTurnEnd()
+void showPlayersAtTurnEnd()
 {
 	std::cout << "****************************************************************************************************\n" << endl;
 	
@@ -1076,31 +1175,46 @@ void Players::showPlayersAtTurnEnd()
 
 		if ((*iter)->get_current_race() != nullptr)
 		{
-			int totalSolider = 0;
+			int totalActiveSolider = 0;
+			int totalDeclinedSolider = 0;
 			for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
 			{
-				if (ptPlayersMap->getRegion(i)->get_cu_race_name() == (*iter)->get_current_race()->getRaceName()) totalSolider += ptPlayersMap->getRegion(i)->get_solider_current_race();
+				if (ptPlayersMap->getRegion(i)->get_owner() == (*iter)->get_id_player())
+				{
+					totalActiveSolider += ptPlayersMap->getRegion(i)->get_solider_current_race();
+					totalDeclinedSolider += ptPlayersMap->getRegion(i)->get_solider_declined_race();
+				}
+					
+					//std::cout << "Region " << i << " has " << ptPlayersMap->getRegion(i)->get_solider_declined_race() << " declined soliders " << std::endl;
 			}
 
-			std::cout << "currently has " << totalSolider << " soliders in defending and ";
-			totalSolider += (*iter)->get_in_hand_solider_current_race();
-			std::cout << (*iter)->get_in_hand_solider_current_race() << " soliders in hand. " << "In total " << totalSolider << " soliders in active status. \n" << std::endl;
+			std::cout << "You currently has " << totalActiveSolider << " active race soliders in defending and ";
+			totalActiveSolider += (*iter)->get_in_hand_solider_current_race();
+			std::cout << (*iter)->get_in_hand_solider_current_race() << " soliders in hand. " << "In total " << totalActiveSolider << " soliders in active status. \n" << std::endl;
+
+			if (totalDeclinedSolider > 0)
+			{
+				std::cout << "You currently has " << totalDeclinedSolider << " declined race soliders in defending and ";
+				totalActiveSolider += (*iter)->get_in_hand_solider_declined_race();
+				std::cout << (*iter)->get_in_hand_solider_declined_race() << " declined soliders in hand. " << "In total " << totalDeclinedSolider << " soliders in declined status. \n" << std::endl;
+
+			}
 		}
 		
-		if ((*iter)->get_declined_race() != nullptr)
+		/*if ((*iter)->get_declined_race() != nullptr)
 		{
 			int totalSolider = 0;
 			for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
 			{
-				if (ptPlayersMap->getRegion(i)->get_de_race_name() == (*iter)->get_declined_race()->getRaceName()) totalSolider += ptPlayersMap->getRegion(i)->get_solider_declined_race();
-			}
+				if (ptPlayersMap->getRegion(i)->get_owner() == (*iter)->get_id_player())
+					totalSolider += ptPlayersMap->getRegion(i)->get_solider_declined_race();
+			} 
 
 			std::cout << "currently has " << totalSolider << " soliders in defending and ";
 			totalSolider += (*iter)->get_in_hand_solider_declined_race();
 			std::cout << (*iter)->get_in_hand_solider_declined_race() << " soliders in hand. " << "In total " << totalSolider << " soliders in active status. " << std::endl;
-		}
-	}
+		}*/
 
-	
+	}
 	std::cout << "****************************************************************************************************\n" << endl;
 }

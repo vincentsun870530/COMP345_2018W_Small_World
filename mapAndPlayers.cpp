@@ -1,4 +1,5 @@
 #include "mapAndPlayers.h"
+#include "PlayerObserver.h"
 
 int numberOfPlayers = 0;
 Map * ptPlayersMap = nullptr;
@@ -39,6 +40,7 @@ vector<Players *> *  mapAndPlayers::creatPlayers()
 		tempPlayer = new Players();
 		tempPlayersVector->push_back(tempPlayer);
 		tempPlayersVector->at(i)->set_id_player(i);
+		PlayerObserver *player_observer = new PlayerObserver(tempPlayer);
 	}
 
 	return tempPlayersVector;
