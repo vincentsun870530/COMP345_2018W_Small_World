@@ -11,6 +11,8 @@ namespace boost {
 #include <stdbool.h>
 #include "GamePieces/GamePiece.h"
 
+class Observer;
+
 class Region
 {
 public:
@@ -161,10 +163,7 @@ public:
 		regionID = region_id;
 	}
 
-	void set_owner(int owner)
-	{
-		this->owner = owner;
-	}
+	void set_owner(int owner);
 
 	void set_id_cu_race(int id_cu_race)
 	{
@@ -301,6 +300,20 @@ public:
 		lostTribeCount = lost_tribe_count;
 	}
 
+	int get_former_owner() const
+	{
+		return formerOwner;
+	}
+
+	void set_former_owner(const int former_owner)
+	{
+		formerOwner = former_owner;
+	}
+
+	void attach(Observer * inputObserver);
+	void detach(Observer * inputObserver);
+	void notify();
+
 private:
 
 	friend class boost::serialization::access;
@@ -309,6 +322,7 @@ private:
 	{
 		ar & regionID;
 		ar & owner;
+		ar & formerOwner;
 		ar & ID_CuRace;
 		ar & ID_DeRace;
 		ar & soliderCurrentRace;
@@ -340,6 +354,7 @@ private:
 
 	int  regionID = -1;
 	int  owner = -1;
+	int  formerOwner = -1;
 	int  ID_CuRace = -1;
 	int  ID_DeRace = -1;
 	int  soliderCurrentRace = 0;
@@ -367,6 +382,7 @@ private:
 	int swampRegionCount = 0;
 	int lostTribeCount = 0;
 
+	std::vector<Observer *> playerShareObserver;
 
 };
 

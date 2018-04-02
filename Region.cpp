@@ -1,7 +1,7 @@
 #include "Region.h"
 #include <iostream>
 #include <boost/serialization/vector.hpp>
-
+#include  "Observer.h"
 
 
 Region::Region()
@@ -24,3 +24,34 @@ void Region::printRegion() {
 	std::cout << "This region is still controlled by a lost tribe:   " << static_cast<bool>(get_lost_tribe_count()) << " \n "<< std::endl;
 }
 
+
+void Region::attach(Observer * inputObserver)
+{
+	playerShareObserver.push_back(inputObserver) ;
+}
+void Region::detach(Observer * inputObserver)
+{
+	for(auto iter = playerShareObserver.begin(); iter != playerShareObserver.end(); ++iter)
+	{
+		if ((*iter) == inputObserver)
+		{
+			playerShareObserver.erase(iter);
+			break;
+		}	
+	}
+	playerShareObserver.shrink_to_fit();
+}
+void Region::notify()
+{
+	for (auto iter = playerShareObserver.begin(); iter != playerShareObserver.end(); ++iter)
+	{
+		(*iter)->update(this);
+	}
+}
+
+void Region::set_owner(int owner)
+{
+	formerOwner = this->get_owner();
+	this->owner = owner;
+	notify();
+}

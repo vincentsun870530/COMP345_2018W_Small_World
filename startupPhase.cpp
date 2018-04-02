@@ -125,7 +125,7 @@ void startupPhase::bannersShuffling()
 		std::random_shuffle((*raceBannerVector).begin(), (*raceBannerVector).end());
 
 		int indexNumberOfRaceBanners = 0;
-		for (auto p = (*raceBannerVector).begin(); p != (*raceBannerVector).end(); p++)
+		for (auto p = (*raceBannerVector).begin(); p != (*raceBannerVector).end(); ++p)
 		{
 			(*p)->set_id_race(indexNumberOfRaceBanners++);
 		}
@@ -157,7 +157,7 @@ void startupPhase::badgesShuffling()
 		std::random_shuffle((*specialPowerBadgesVector).begin(), (*specialPowerBadgesVector).end());
 
 		int indexNumberOfSpecialPowerBadges = 0;
-		for (auto p = (*specialPowerBadgesVector).begin(); p != (*specialPowerBadgesVector).end(); p++)
+		for (auto p = (*specialPowerBadgesVector).begin(); p != (*specialPowerBadgesVector).end(); ++p)
 		{
 			(*p)->set_id_badges(indexNumberOfSpecialPowerBadges++);
 		}

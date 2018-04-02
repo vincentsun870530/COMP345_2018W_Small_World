@@ -78,19 +78,38 @@ void showALLRacesBadges() // for test4
 	else std::cout << "there is no available races and badges now! " << std::endl;
 }
 
+void showAllRacesBadges() //global function
+{
+	if (raceBannerVector)
+	{
+		for (auto iter = raceBannerVector->begin(); (iter != raceBannerVector->end()); ++iter)
+		{
+			std::cout << "Race " << (*iter)->get_id_race() << " " << (*iter)->getRaceName() << " available " <<(*iter)->is_available() <<endl;
+		}
+	}
+
+	if (specialPowerBadgesVector)
+	{
+		for (auto iter = specialPowerBadgesVector->begin(); (iter != specialPowerBadgesVector->end()); ++iter)
+		{
+			std::cout << "Special power " << (*iter)->get_id_badges() << " " << (*iter)->getbadgesName() << " available " << (*iter)->is_available() << endl;
+		}
+	}
+}
 
 void show6OrLessAvailableRacesBadges() // globle function
 {
 	if (raceBannerVector)
 	{
-		int i = 0;
+		int i = 0, j = 0;
 		for (auto iter = raceBannerVector->begin(); (iter != raceBannerVector->end())&&(i < 6); ++iter)
 		{
 			if ((*iter)->is_available())
 			{
-				std::cout << "Race " << (*iter)->get_id_race() << " : " << (*iter)->getRaceName() <<"   " << " Badges " << (specialPowerBadgesVector->at(i))->get_id_badges() << " : " << ((specialPowerBadgesVector->at(i)))->getbadgesName() << endl;
+				std::cout << "Race " << (*iter)->get_id_race() << " : " << (*iter)->getRaceName() <<"   " << " Badges " << (specialPowerBadgesVector->at(j))->get_id_badges() << " : " << ((specialPowerBadgesVector->at(j)))->getbadgesName() << endl;
 				i++;
 			}
+			j++;
 		}
 	}
 	else std::cout << "there is no available races and badges now! " << std::endl;
