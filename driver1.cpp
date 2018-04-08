@@ -61,6 +61,9 @@
 #include "mapAndPlayers.h"
 #include "startupPhase.h"
 #include "pickupRacePower.h"
+#include "PlayerObserver.h"
+#include "coinObserverDecorator.h"
+#include "MapObserver.h"
 
 
 using namespace std;
@@ -403,10 +406,15 @@ void test13()
 
 	cout << "------------------------First Turn----------------------------------" << endl;
 
+	Observer * map_observer = new MapObserver(*ptPlayersPointerList);
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
 		std::cout << "************************************************************************************ " << endl;
-		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
+		//std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
+		Observer * player_observer = new PlayerObserver(*iter);
+		//Decorator * decorator = new coinObserverDecorator(player_observer);
+		//decorator->update();
+
 		(*iter)->firstTurnAttack();
 	}
 

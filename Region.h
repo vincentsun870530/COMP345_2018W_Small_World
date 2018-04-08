@@ -1,4 +1,6 @@
 #pragma once
+#include "Subject.h"
+
 
 namespace boost {
 	namespace serialization {
@@ -11,16 +13,18 @@ namespace boost {
 #include <stdbool.h>
 #include "GamePieces/GamePiece.h"
 
-class Region
+class Region : public Subject
 {
 public:
 	Region();
 	~Region();
+	bool is_is_region_change() const;
+	void set_is_region_change(bool is_region_change);
+	bool isRegionChange = false;
 	//void setRegionID(int n);
 	//int getRegionID() { return getRegionID(); };
 	//int getOwner() { return getOwner(); };
 	void printRegion();
-
 	int get_region_id() const
 	{
 		return regionID;
@@ -164,6 +168,8 @@ public:
 	void set_owner(int owner)
 	{
 		this->owner = owner;
+		isRegionChange = true;
+		notify();
 	}
 
 	void set_id_cu_race(int id_cu_race)

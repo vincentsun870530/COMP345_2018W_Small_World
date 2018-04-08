@@ -156,8 +156,8 @@ void Players::updateAdjacentRegionID()
 			tempAdjRegionIDVector.clear();
 		}
 	}
+	
 	std::cout << "Player " << this->get_id_player() << " has " << turnRegionConquerList.size() << " region" << endl;
-	setPrecentageRegionRatio();
 	printRegionList(turnRegionConquerList);
 	
 	if (!(turnRegionConquerList.empty()))
@@ -340,7 +340,6 @@ void Players::loseAndWithdraws(int ID_Region)
 	{
 		returnSoildier = ptPlayersMap->getRegion(ID_Region)->get_solider_current_race();
 		ptPlayersMap->getRegion(ID_Region)->set_cu_race_name("");
-		ptPlayersMap->getRegion(ID_Region)->set_is_region_change(true);
 		ptPlayersMap->getRegion(ID_Region)->set_owner(-1);
 		ptPlayersMap->getRegion(ID_Region)->set_solider_current_race(0);
 		playerToGetReturnSolider->set_in_hand_solider_current_race(playerToGetReturnSolider->get_in_hand_solider_current_race() + returnSoildier - 1);
@@ -666,16 +665,15 @@ vector<int> Players::getFirstTimeAvailableAttackRegion()
 void Players::showAvailableAttackRegion(vector<int> & inputVector)
 {
 	vector<int>  tempRegionIDVector(inputVector);
-	std::cout << "The current available regions for your attack are: " << endl;
+	cout << "\nYou have " << this->get_in_hand_solider_current_race() << " tokens for this turn" << endl;
+	std::cout << "\nThe current available regions for your attack are: " << endl;
 	printRegionList(tempRegionIDVector);
 }
 
 int Players::getFirstTimeAttackRegionFromUser()
 {
 	vector<int> tempRegionIDVector(getFirstTimeAvailableAttackRegion());
-	this->phaser = " conquers some regions. ";
-	phaseChange = true;
-	notify();
+
 	showAvailableAttackRegion(tempRegionIDVector);
 
 	int userInputRegionID = -1;
@@ -699,9 +697,7 @@ int Players::getFirstTimeAttackRegionFromUser()
 int Players::getAttackRegionFromUser()
 {
 	vector<int>  tempRegionIDVector(getAvailableAttackRegion());
-	this->phaser = " Conquers some regions. ";
-	phaseChange = true;
-	notify();
+
 	showAvailableAttackRegion(tempRegionIDVector);
 
 	int userInputRegionID = -1;
@@ -738,8 +734,7 @@ int Players::normalConquerForceDemandCount(int ID_Region)
 
 void Players::firstTurnAttack()
 {
-	this->phaser = " starts to play the game. ";
-	phaseChange = true;
+	this->phaser = "starts to play the game.";
 	notify();
 	int attackRegionID = getFirstTimeAttackRegionFromUser();
 
@@ -797,9 +792,9 @@ void Players::firstTurnAttack()
 		}
 		else 
 		{
-			cout << "This region demand at least " << neededTroopCountForSpecificRegion << " to conquer. " << endl;
-			std::cout << "You have only " << this->get_in_hand_solider_current_race() << " soliders in hand." << endl;
-			std::cout << "You have not enough soliders in hand, so a dice play is needed! " << endl;
+			std:cout << " This region demand at least " << neededTroopCountForSpecificRegion << " to conquer. " << endl;
+			std::cout << " you have only " << this->get_in_hand_solider_current_race() << " soliders in hand." << endl;
+			std::cout << "you have not enough soliders in hand, so a dice play is needed! " << endl;
 			int tempDiceNumber = dice.rollingDice(true);
 
 			if (this->get_in_hand_solider_current_race() + tempDiceNumber >= neededTroopCountForSpecificRegion)
@@ -809,9 +804,9 @@ void Players::firstTurnAttack()
 				this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
 				this->get_current_race()->afterAttackRetrealt();
+				cout << "\nAttack is done! Let's start deploy\n" << endl;
 			}
-			this->phaser = " starts deploy. ";
-			notify();
+			cout << "\noops! still not enough soliders, now you need to deploy.  \n" << endl;
 			outerRepeat = false;
 		}
 	} while (outerRepeat);
@@ -820,8 +815,8 @@ void Players::firstTurnAttack()
 	this->get_current_power()->specialDeployAfterAttack();
 	this->get_current_race()->specialDeploy();
 	this->normalDeploy();
-	this->phaser = " scores some victory coins. ";
-	notify();	
+	
+		
 	std::cout << "this is the end of the playing of player " << this->get_id_player() << " in this turn . " <<endl;
 	std::cout << "\n****************************************************************************************************\n" << endl;
 	std::cout << "#####################################################################\n" << endl;
@@ -920,8 +915,7 @@ void Players::Decline()
 void Players::followingTurnAttack()  //******************************************************************************************************************************************
 {
 
-	this->phaser = " continue to play the game. ";
-	phaseChange = true;
+
 	int userInputInt1 = -1;
 	std::cout << "Do you need to declined immediately?  please input 1(yes) or 0(no) : " << endl;
 	std::cin >> userInputInt1;
@@ -935,7 +929,7 @@ void Players::followingTurnAttack()  //*****************************************
 
 	readyTroop();
 
-	notify();
+	std::cout << " Player " << this->get_id_player() << " has " << this->get_in_hand_solider_current_race() << " solider in hand. " << std::endl;
 	
 	if (this->get_declined_race()) this->get_declined_race()->readyDeclinedTroop();
 
@@ -998,7 +992,7 @@ void Players::followingTurnAttack()  //*****************************************
 		}
 		else if (this->get_in_hand_solider_current_race() == 0) 
 		{
-		cout << "You now have 0 solider in hand! Not able to conquer any region." << std::endl;
+		std:cout << "You now have 0 solider in hand! Not able to conquer any region." << std::endl;
 		outerRepeat = false;
 		}
 		else
@@ -1034,8 +1028,9 @@ void Players::followingTurnAttack()  //*****************************************
 				this->get_current_power()->alternativeSpecialAttack(attackRegionID);
 				normalAttack(attackRegionID, this->get_in_hand_solider_current_race());
 				this->get_current_race()->afterAttackRetrealt();
+				cout << "\nAttack is done! Let's start deploy\n" << endl;
 			}
-
+			else std::cout << "oops, Soliders form dice are still not enough! you need  to redeploy now ." << std::endl;
 			outerRepeat = false;
 		}
 	} while (outerRepeat);
@@ -1085,21 +1080,6 @@ int Players::returnCurrentRaceTroop(int ID_Region)
 		return returnCurrentRaceSolider;
 	}
 	return 0;
-}
-
-bool Players::is_phase_change() const
-{
-	return phaseChange;
-}
-
-void Players::set_phase_change(bool phase_change)
-{
-	phaseChange = phase_change;
-}
-
-double Players::get_precentage() const
-{
-	return precentage;
 }
 
 void Players::abandonAreas()
@@ -1238,14 +1218,3 @@ void showPlayersAtTurnEnd()
 	}
 	std::cout << "****************************************************************************************************\n" << endl;
 }
-
-// set precentage region 
-
-void Players::setPrecentageRegionRatio()
-{
-	this->precentage = (static_cast<double>(turnRegionConquerList.size())/ptPlayersMap->getNumRegion())*100+ (static_cast<double>(controlledRegionList.size()) / ptPlayersMap->getNumRegion())*100;
-	this->precentage = round(this->precentage * 100.0)/100.0;
-}
-
-
-

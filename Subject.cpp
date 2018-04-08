@@ -32,8 +32,7 @@ void Subject::notify() {
 	for (vector<Observer*>::iterator itr = observerList->begin();
 		itr != observerList->end();
 		++itr)
-	{
-		cout << "in notify function " << endl;
+	{	
 		(*itr)->update();
 	}
 }

@@ -12,6 +12,7 @@
 #include "Dice.h"
 #include "global_variables_clarification.h"
 #include "Subject.h"
+#include "PlayerObserver.h"
 
 class RaceBanner;
 class Badges;
@@ -31,19 +32,16 @@ private:
 	Dice dice;
 	vector <Region>regionList;
 	DeckCard declineddeckCard;
-
 	int ID_player = -1;
 	int coin_1 = 0, coin_3 = 0, coin_5 = 0, coin_10 = 0;
-	string phaser = "sleeping";
-
+	int turn = 0;
+	string phaser = "sleeping"; // For playerObserver
 	vector <int> controlledRegionList;
 	vector<int > adjacentRegionList;
 	vector<int > turnRegionConquerList;
-
 	RaceBanner * currentRace = nullptr;
 	RaceBanner * DeclinedRace = nullptr;
 	Badges * currentPower = nullptr;
-
 	int inHandSoliderCurrentRace = 0;
 	int inHandSoliderDeclinedRace = 0;
 	int inHandTrollLairs = 0;
@@ -52,15 +50,18 @@ private:
 	int inHandHole_in_the_ground = 0;
 	int inHandhero = 0;
 	int inHandDragon = 0;
-
 	bool alreadyCountedBouns = false;
-
 	int playerTotalCoins = 0;
-
 	int returnCurrentRaceTroop(int ID_Region);
+	double precentage = 0;
+	bool phaseChange = false;
+	bool regionChange = false;
 
 public:
-	
+
+	bool is_phase_change() const;
+	void set_phase_change(bool phase_change);
+	double get_precentage() const;
 	vector<int> get_controlled_region_list() { return controlledRegionList; };
 	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList; };
 	void addTurnRegionConquerList(int ID_region);
@@ -69,9 +70,9 @@ public:
 	void addControlledRegionID(int ID_region);
 	void removeControlledRegionID(int ID_region);
 	void updateAdjacentRegionID();
+	void setPrecentageRegionRatio();
 
 	bool containRegionID(vector<int> * const  regionList, int ID_Region);
-
 
 	int get_id_player() const
 	{
