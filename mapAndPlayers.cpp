@@ -19,11 +19,28 @@ mapAndPlayers::~mapAndPlayers()
 
 Map* mapAndPlayers::creatMap()
 {
-	
+	// set a flag for try catch block
+	bool goInCatchBlock;
+
 	do {
-		cout << "Please input the number of players:  " << endl;
-		cin >> numberOfPlayers;
-	} while ((numberOfPlayers < 2) || (numberOfPlayers > 5));
+		try {
+			goInCatchBlock = false;
+			cout << "Please input the number of players:  " << endl;
+			cin >> numberOfPlayers;
+			if((numberOfPlayers < 2) || (numberOfPlayers > 5))
+			{
+				throw runtime_error("Exception Input be a number and >=2 or <=5");
+
+			}
+		}catch(runtime_error& ex)
+		{
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ex.what() << endl;
+			goInCatchBlock = true;
+		}
+	} while (goInCatchBlock);
 
 	MapLoader maploader1(numberOfPlayers);
 

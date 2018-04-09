@@ -34,14 +34,14 @@ Map* MapLoader::loadMap(bool interactive = false)
 				}
 				catch (const boost::archive::archive_exception&)
 				{
-					cout << "Your file includes error information or the file you input does not exit, please try another file: " << endl;
+					cout << "Exception Your file includes error information or the file you input does not exit, please try another file: " << endl;
 					set = true;
 					
 				}
 				catch (std::exception err)
 				{
 					cout << err.what() << endl;
-					cout << "Your file includes error information or the file you input does not exit, please try another file: " << endl;
+					cout << "Exception Your file includes error information or the file you input does not exit, please try another file: " << endl;
 					set = true;
 					
 				}

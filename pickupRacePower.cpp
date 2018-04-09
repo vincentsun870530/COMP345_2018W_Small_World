@@ -7,11 +7,25 @@ extern std::vector<Badges *> * specialPowerBadgesVector;
 int get_correct_inputNumberOfChoice(int i, int k) // globle function
 {
 	int inputNumber = -1;
-
+	bool inputIsNotCorrect;
 	do {
-		cout << "Please input number from between  " << i << " and " << k << " " << endl;
-		cin >> inputNumber;
-	} while ((inputNumber < i) || (inputNumber > k));
+		try {
+			inputIsNotCorrect = false;
+			cout << "Please input number from between  " << i << " and " << k << " " << endl;
+			cin >> inputNumber;
+			if((inputNumber < i) || (inputNumber > k))
+			{
+				throw runtime_error("Exception input should be a number and >=" + to_string(i) + " or <=" + to_string(k));
+			}
+		}catch(runtime_error& ex)
+		{
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ex.what() << endl;
+			inputIsNotCorrect = true;
+		}
+		
+	} while (inputIsNotCorrect);
 
 	return inputNumber;
 }
@@ -39,18 +53,32 @@ int getNumberInputForRace() // globle function
 
 	int MaxNumberOfAvailableRace = currentMaxNumberOfRace();
 
-	if (MaxNumberOfAvailableRace < 0) return MaxNumberOfAvailableRace;
+	if (MaxNumberOfAvailableRace < 0)
+	{
+		return MaxNumberOfAvailableRace;
+	}
 
 	do
 	{
-		NumberInputForRace = get_correct_inputNumberOfChoice(0, (14 - 1));
+		NumberInputForRace = get_correct_inputNumberOfChoice(0, 13);
 
 		//cout << " ((raceBannerVector->at(NumberInputForRace))->is_available()) " << ((raceBannerVector->at(NumberInputForRace))->is_available()) << endl;
 		//cout << "  (NumberInputForRace <= MaxNumberOfAvailableRace)) " << NumberInputForRace << " < " << MaxNumberOfAvailableRace << endl;
-		if (((raceBannerVector->at(NumberInputForRace))->is_available()) && (NumberInputForRace <= MaxNumberOfAvailableRace))  repeat = false;
-		else
+
+		try {
+			
+			if(((raceBannerVector->at(NumberInputForRace))->is_available()) && (NumberInputForRace <= MaxNumberOfAvailableRace))
+			{
+			repeat = false;
+			}
+			else
+			{
+			throw runtime_error( "Exception Your option is not available! Please select your desired race again! ") ;
+		
+			}
+		}catch(runtime_error& ex)
 		{
-			std::cout << "Your option is not available! Please select your desired race again! " << std::endl;
+			cout<<ex.what()<<endl;
 			repeat = true;
 		}
 	} while (repeat);
