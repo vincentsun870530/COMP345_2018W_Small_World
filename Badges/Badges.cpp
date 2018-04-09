@@ -1,5 +1,6 @@
 #include "Badges.h"
 
+
 Badges::Badges() {
 	// std::cout << "Badges Created" << std::endl;
 	badgesName_ = "";
@@ -15,22 +16,29 @@ Badges::Badges(const std::string &badgesName_, const std::string &specialPowerDe
 	: badgesName_(badgesName_), specialPowerDescription_(specialPowerDescription_), tokenAmount_(tokenAmount_) {}
 
 void Badges::setBadgesName_(const std::string &badgesName) {
+
 	badgesName_ = badgesName;
 }
 
+
 void Badges::setSpecialPowerDescription_(const std::string &specialPowerDescription) {
+
 	specialPowerDescription_ = specialPowerDescription;
+
 }
 
 void Badges::setTokenAmount_(int tokenAmount) {
 	tokenAmount_ = tokenAmount;
 }
 
+
 const std::string Badges::getbadgesName() {
+
 	return badgesName_;
 }
 
 const std::string Badges::getSpecialPowerName() {
+
 	return specialPowerDescription_;
 }
 
@@ -46,9 +54,13 @@ void Badges::show() {
 };
 
 int Badges::startSuperPowerForVictoryCoin(int victoryCoin) {
+
 	return (victoryCoin += 0);
+
 }
 
 void Badges::startSuperPowerForToken(int tempToken) {
+
 	tokenAmount_ = tokenAmount_ + tempToken;
+
 }

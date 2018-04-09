@@ -2,9 +2,11 @@
 #include "Map.h"
 #include "MapLoader.h"
 #include "Players.h"
+#include "Observer.h"
 
 extern int numberOfPlayers;
 extern vector<Players *> * ptPlayersPointerList;
+extern Observer * ObserverForPlayers;
 
 class mapAndPlayers
 {

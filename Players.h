@@ -11,19 +11,19 @@
 #include "Region.h"
 #include "Dice.h"
 #include "global_variables_clarification.h"
-#include "Subject.h"
-#include "PlayerObserver.h"
 
 class RaceBanner;
 class Badges;
-
+class Strategy;
+class Observer;
 
 void showTroopStatusAfterDeploy(vector<int> & inputControlList);
 void showPlayersAtTurnEnd();
 void printRegionList(vector<int> & inputVector);
 
+void showAllRacesBadges();
 
-class Players : public Subject {
+class Players {
 
 private:
 	DeckCard currentdeckCard;
@@ -32,16 +32,23 @@ private:
 	Dice dice;
 	vector <Region>regionList;
 	DeckCard declineddeckCard;
+
 	int ID_player = -1;
 	int coin_1 = 0, coin_3 = 0, coin_5 = 0, coin_10 = 0;
-	int turn = 0;
-	string phaser = "sleeping"; // For playerObserver
+
 	vector <int> controlledRegionList;
 	vector<int > adjacentRegionList;
 	vector<int > turnRegionConquerList;
+	vector<int> activeRaceControlRegionList;
+	vector<int> declinedRaceControlRegionList;
+
+	string programStatus;
+	vector<Observer*> observerVector;
+
 	RaceBanner * currentRace = nullptr;
 	RaceBanner * DeclinedRace = nullptr;
 	Badges * currentPower = nullptr;
+
 	int inHandSoliderCurrentRace = 0;
 	int inHandSoliderDeclinedRace = 0;
 	int inHandTrollLairs = 0;
@@ -50,18 +57,18 @@ private:
 	int inHandHole_in_the_ground = 0;
 	int inHandhero = 0;
 	int inHandDragon = 0;
+
 	bool alreadyCountedBouns = false;
+
 	int playerTotalCoins = 0;
+
 	int returnCurrentRaceTroop(int ID_Region);
-	double precentage = 0;
-	bool phaseChange = false;
-	bool regionChange = false;
+
+	Strategy * pt_strategy_ = nullptr;
+
+	int gameTurnMarker = 0;
 
 public:
-
-	bool is_phase_change() const;
-	void set_phase_change(bool phase_change);
-	double get_precentage() const;
 	vector<int> get_controlled_region_list() { return controlledRegionList; };
 	vector<int> get_turn_region_conquer_list() { return turnRegionConquerList; };
 	void addTurnRegionConquerList(int ID_region);
@@ -70,9 +77,12 @@ public:
 	void addControlledRegionID(int ID_region);
 	void removeControlledRegionID(int ID_region);
 	void updateAdjacentRegionID();
-	void setPrecentageRegionRatio();
 
 	bool containRegionID(vector<int> * const  regionList, int ID_Region);
+	bool containObserver(Observer *);
+
+	void showInHand();
+	void showDomination();
 
 	int get_id_player() const
 	{
@@ -84,9 +94,6 @@ public:
 		ID_player = id_player;
 	}
 
-
-	const string& get_phaser() const;
-	void set_phaser(const string& phaser);
 	Players();
 
 	const Dice &getDice() const;
@@ -229,6 +236,8 @@ public:
 		void set_in_hand_solider_current_race(const int in_hand_solider_current_race)
 		{
 			inHandSoliderCurrentRace = in_hand_solider_current_race;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_solider_declined_race() const
@@ -239,6 +248,8 @@ public:
 		void set_in_hand_solider_declined_race(const int in_hand_solider_declined_race)
 		{
 			inHandSoliderDeclinedRace = in_hand_solider_declined_race;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_troll_lairs() const
@@ -249,6 +260,8 @@ public:
 		void set_in_hand_troll_lairs(const int in_hand_troll_lairs)
 		{
 			inHandTrollLairs = in_hand_troll_lairs;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_fortresses() const
@@ -259,6 +272,8 @@ public:
 		void set_in_hand_fortresses(const int in_hand_fortresses)
 		{
 			inHandFortresses = in_hand_fortresses;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_encampments() const
@@ -269,6 +284,8 @@ public:
 		void set_in_hand_encampments(const int in_hand_encampments)
 		{
 			inHandEncampments = in_hand_encampments;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_hole_in_the_ground() const
@@ -279,6 +296,8 @@ public:
 		void set_in_hand_hole_in_the_ground(const int in_hand_hole_in_the_ground)
 		{
 			inHandHole_in_the_ground = in_hand_hole_in_the_ground;
+			notify();
+			showInHand();
 		}
 
 		int get_in_handhero() const
@@ -289,6 +308,8 @@ public:
 		void set_in_handhero(const int in_handhero)
 		{
 			inHandhero = in_handhero;
+			notify();
+			showInHand();
 		}
 
 		int get_in_hand_dragon() const
@@ -299,6 +320,8 @@ public:
 		void set_in_hand_dragon(const int in_hand_dragon)
 		{
 			inHandDragon = in_hand_dragon;
+			notify();
+			showInHand();
 		}
 
 		bool get_already_counted_bouns() const
@@ -319,8 +342,70 @@ public:
 		void set_player_total_coins(const int player_total_coins)
 		{
 			playerTotalCoins = player_total_coins;
+			notify();
 		}
-		
+
+		Strategy* get_pt_strategy() const
+		{
+			return pt_strategy_;
+		}
+
+		void set_pt_strategy(Strategy* const pt_strategy)
+		{
+			pt_strategy_ = pt_strategy;
+		}
+
+		void attach(Observer * inputObserver);
+		void detach(Observer * inputObserver);
+		void notify();
+
+		string get_program_status() const
+		{
+			return programStatus;
+		}
+
+		void set_program_status(const string& program_status)
+		{
+			programStatus = program_status;
+		}
+
+		vector<int> get_active_race_control_region_list() const
+		{
+			return activeRaceControlRegionList;
+		}
+
+		void update_active_race_control_region_list();
+	
+
+		vector<int> get_declined_race_control_region_list() const
+		{
+			return declinedRaceControlRegionList;
+		}
+
+		void update_declined_race_control_region_list();
+
+		vector<int> get_adjacent_region_list() const
+		{
+			return adjacentRegionList;
+		}
+
+		void update_game_turn();
+
+		int get_game_turn_marker() const
+		{
+			return gameTurnMarker;
+		}
+
+		void set_Game_Turn_Marker(const int gameTurn)
+		{
+			gameTurnMarker = gameTurn;
+			notify();
+		}
+
+		vector<Observer*> * get_observer_vector() 
+		{
+			return &observerVector;
+		}
 };
 
 

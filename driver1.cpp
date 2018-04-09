@@ -61,10 +61,16 @@
 #include "mapAndPlayers.h"
 #include "startupPhase.h"
 #include "pickupRacePower.h"
-#include "PlayerObserver.h"
-#include "coinObserverDecorator.h"
-#include "MapObserver.h"
-
+#include "AggressiveStrategy.h"
+#include "DefensiveStrategy.h"
+#include "RandomStrategy.h"
+#include "ModerateStrategy.h"
+#include "ObserverPhase.h"
+#include "ObserverStatistics.h"
+#include "basicGameStasticsObserver.h"
+#include "playerDominationObserverDecorator.h"
+#include "playerHandsObserverDecorator.h"
+#include "victoryCoinsObserverDecorator.h"
 
 using namespace std;
 //
@@ -265,7 +271,7 @@ extern Map * ptPlayersMap;
 extern vector<Players *> * ptPlayersPointerList;
 extern std::vector<RaceBanner *> * raceBannerVector;
 extern std::vector<Badges *> * specialPowerBadgesVector;
-
+extern Observer * ObserverForPlayers;
 
 
 void test11() {
@@ -311,9 +317,7 @@ void test12()
 	cout << "We have following gamepieces: " << endl; // **************************************
 	v->setGamePieceVector(); // create game piece
 
-	delete mapPlayerPointer;
 
-	mapPlayerPointer = nullptr;
 
 	system("pause");
 
@@ -346,6 +350,11 @@ void test12()
 		if (ptPlayersMap->getRegion(i)->get_mountain_count())
 			std::cout << "Region " << i << " has a mountain! " << std::endl;
 	}
+
+	delete mapPlayerPointer;
+
+	mapPlayerPointer = nullptr;
+
 	system("pause");
 }
 
@@ -386,7 +395,7 @@ void test13()
 	cout << "Player initial coins:" << endl;
 	v->setPlayersCoin();
 
-	system("pause");
+	//system("pause");
 
 	
 	showALLRacesBadges(); // for test
@@ -406,15 +415,10 @@ void test13()
 
 	cout << "------------------------First Turn----------------------------------" << endl;
 
-	Observer * map_observer = new MapObserver(*ptPlayersPointerList);
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
 		std::cout << "************************************************************************************ " << endl;
-		//std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
-		Observer * player_observer = new PlayerObserver(*iter);
-		//Decorator * decorator = new coinObserverDecorator(player_observer);
-		//decorator->update();
-
+		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " <<  " \n " << endl;
 		(*iter)->firstTurnAttack();
 	}
 
@@ -451,16 +455,409 @@ void test13()
 
 }
 
+
+void test14()
+{
+	cout << "Welcome to Small World" << endl;
+
+	mapAndPlayers * mapPlayerPointer(new mapAndPlayers());
+
+	mapPlayerPointer->setupMapAndPlayers();
+
+	ptPlayersMap->printMap();
+
+	mapPlayerPointer->printPlayersList(ptPlayersPointerList);
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->attach(new ObserverPhase);
+	}
+
+	if (ptPlayersPointerList->size() >1)
+		ptPlayersPointerList->at(1)->set_pt_strategy(new AggressiveStrategy);
+	if (ptPlayersPointerList->size() > 2)
+		ptPlayersPointerList->at(2)->set_pt_strategy(new DefensiveStrategy);
+	if (ptPlayersPointerList->size() > 3)
+		ptPlayersPointerList->at(3)->set_pt_strategy(new ModerateStrategy);
+	if (ptPlayersPointerList->size() > 4)
+		ptPlayersPointerList->at(4)->set_pt_strategy(new RandomStrategy);
+
+	//ObserverForPlayers = new ObserverStatistics(ptPlayersPointerList->size());
+
+	startupPhase * v(new startupPhase());
+	cout << "*************Game Piece Creating*************" << endl; // **************************************
+	cout << "We have following gamepieces: " << endl; // **************************************
+	v->setGamePieceVector(); // create game piece
+
+	delete mapPlayerPointer;
+
+	mapPlayerPointer = nullptr;
+
+	system("pause");
+
+
+	v->setRaceBannerVector();
+	v->setSpecialPowerBadgesVector();
+
+	std::cout << std::endl;
+	ptPlayersMap->printMountainPieceRegion(); // print mount game piece on map
+	std::cout << std::endl;
+	std::cout << "After shuffling : " << std::endl;
+	v->bannersShuffling();
+	v->badgesShuffling();
+	std::cout << std::endl;
+	cout << "Player initial coins:" << endl;
+	v->setPlayersCoin();
+
+	//system("pause");
+
+
+	showALLRacesBadges(); // for test
+
+	cout << "Let's pick our combo" << endl;
+
+	show6OrLessAvailableRacesBadges();
+
+	pickupRacePower* pickupRactPowerAction(new pickupRacePower());
+	pickupRactPowerAction->action();
+
+	show6OrLessAvailableRacesBadges();
+
+	system("pause");
+
+	cout << "************************CONQUERS START***************************" << endl;
+
+	cout << "------------------------First Turn----------------------------------" << endl;
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		std::cout << "************************************************************************************ " << endl;
+		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+		(*iter)->firstTurnAttack();
+	}
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->scoringVictoryCoins();
+	}
+
+	showPlayersAtTurnEnd();
+
+	system("pause");
+
+	gameTurnMarker = 1;
+
+	do
+	{
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+			(*iter)->followingTurnAttack();
+		}
+
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->scoringVictoryCoins();
+		}
+
+		showPlayersAtTurnEnd();
+		gameTurnMarker++;
+
+		system("pause");
+	} while (gameTurnMarker != 10);
+
+
+}
+
+
+void test15()
+{
+	cout << "Welcome to Small World" << endl;
+
+	mapAndPlayers * mapPlayerPointer(new mapAndPlayers());
+
+	mapPlayerPointer->setupMapAndPlayers();
+
+	ptPlayersMap->printMap();
+
+	mapPlayerPointer->printPlayersList(ptPlayersPointerList);
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->attach(new ObserverPhase);
+	}
+
+	if (ptPlayersPointerList->size() > 1)
+		ptPlayersPointerList->at(1)->set_pt_strategy(new AggressiveStrategy);
+	if (ptPlayersPointerList->size() > 2)
+		ptPlayersPointerList->at(2)->set_pt_strategy(new DefensiveStrategy);
+	if (ptPlayersPointerList->size() > 3)
+		ptPlayersPointerList->at(3)->set_pt_strategy(new ModerateStrategy);
+	if (ptPlayersPointerList->size() > 4)
+		ptPlayersPointerList->at(4)->set_pt_strategy(new RandomStrategy);
+
+	//ObserverForPlayers = new ObserverStatistics(ptPlayersPointerList->size());
+
+	startupPhase * v(new startupPhase());
+	cout << "*************Game Piece Creating*************" << endl; // **************************************
+	cout << "We have following gamepieces: " << endl; // **************************************
+	v->setGamePieceVector(); // create game piece
+
+	delete mapPlayerPointer;
+
+	mapPlayerPointer = nullptr;
+
+	system("pause");
+
+
+	v->setRaceBannerVector();
+	v->setSpecialPowerBadgesVector();
+
+	std::cout << std::endl;
+	ptPlayersMap->printMountainPieceRegion(); // print mount game piece on map
+	std::cout << std::endl;
+	std::cout << "After shuffling : " << std::endl;
+	v->bannersShuffling();
+	v->badgesShuffling();
+	std::cout << std::endl;
+	cout << "Player initial coins:" << endl;
+	v->setPlayersCoin();
+
+	//system("pause");
+
+
+	showALLRacesBadges(); // for test
+
+	cout << "Let's pick our combo" << endl;
+
+	show6OrLessAvailableRacesBadges();
+
+	pickupRacePower* pickupRactPowerAction(new pickupRacePower());
+	pickupRactPowerAction->action();
+
+	show6OrLessAvailableRacesBadges();
+
+	system("pause");
+
+	cout << "************************CONQUERS START***************************" << endl;
+
+	cout << "------------------------First Turn----------------------------------" << endl;
+
+	basicGameStasticsObserver *  BGSObserver = new basicGameStasticsObserver();
+	playerDominationObserverDecorator * PDODecorator = new playerDominationObserverDecorator(BGSObserver);
+	playerHandsObserverDecorator * PHODecorator = new playerHandsObserverDecorator(BGSObserver);
+	victoryCoinsObserverDecorator * VCODecorator = new victoryCoinsObserverDecorator(BGSObserver);
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->attach(BGSObserver);
+	}
+
+	int userInputOptionNumber = 0;
+
+	std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? " << std::endl;
+	std::cin >> userInputOptionNumber;
+
+	if (userInputOptionNumber)
+	{
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->attach(PDODecorator);
+		}
+
+		for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+		{
+			ptPlayersMap->getRegion(i)->attach(PDODecorator);
+		}
+	}
+
+	std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? " << std::endl;
+	std::cin >> userInputOptionNumber;
+
+	if (userInputOptionNumber)
+	{
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->attach(PHODecorator);
+		}
+	}
+
+	std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? " << std::endl;
+	std::cin >> userInputOptionNumber;
+
+	if (userInputOptionNumber)
+	{
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->attach(VCODecorator);
+		}
+	}
+
+	bool addObserverOrRemoval = true;
+
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		std::cout << "************************************************************************************ " << endl;
+		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+		(*iter)->firstTurnAttack();
+	}
+
+	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+	{
+		(*iter)->scoringVictoryCoins();
+	}
+
+	showPlayersAtTurnEnd();
+
+	system("pause");
+
+	gameTurnMarker = 1;
+
+	do
+	{
+		if (addObserverOrRemoval)
+		{
+			if (!(ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
+			{
+				std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? " << std::endl;
+				std::cin >> userInputOptionNumber;
+
+				if (userInputOptionNumber)
+				{
+					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+					{
+						(*iter)->attach(PDODecorator);
+					}
+				}
+			}
+
+			if (!(ptPlayersPointerList->at(0)->containObserver(PHODecorator)))
+			{
+				std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? " << std::endl;
+				std::cin >> userInputOptionNumber;
+
+				if (userInputOptionNumber)
+				{
+					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+					{
+						(*iter)->attach(PHODecorator);
+					}
+				}
+			}
+
+			if (!(ptPlayersPointerList->at(0)->containObserver(VCODecorator)))
+			{
+				std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? " << std::endl;
+				std::cin >> userInputOptionNumber;
+
+				if (userInputOptionNumber)
+				{
+					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+					{
+						(*iter)->attach(VCODecorator);
+					}
+				}
+			}
+
+			std::cout << "\nWould you remove some Decorator ? " << std::endl;
+			std::cin >> userInputOptionNumber;
+
+			if (userInputOptionNumber)
+			{
+				if ((ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
+				{
+					std::cout << "\nWould you like to remove a player_Domination_Observer_Decorator ? " << std::endl;
+					std::cin >> userInputOptionNumber;
+
+					if (userInputOptionNumber)
+					{
+						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+						{
+							(*iter)->detach(PDODecorator);
+						}
+					}
+
+					if (ptPlayersPointerList->at(0)->containObserver(PDODecorator))
+						std::cout << "Detach failed! please note !" << endl;
+				}
+
+				if ((ptPlayersPointerList->at(0)->containObserver(PHODecorator)))
+				{
+					std::cout << "\nWould you like to remove a player_Hands_Observer_Decorator ? " << std::endl;
+					std::cin >> userInputOptionNumber;
+
+					if (userInputOptionNumber)
+					{
+						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+						{
+							(*iter)->detach(PHODecorator);
+						}
+					}
+
+					if (ptPlayersPointerList->at(0)->containObserver(PHODecorator))
+						std::cout << "Detach failed! please note !" << endl;
+				}
+
+				if ((ptPlayersPointerList->at(0)->containObserver(VCODecorator)))
+				{
+					std::cout << "\nWould you like to remove a victory_Coins_Observer_Decorator ? " << std::endl;
+					std::cin >> userInputOptionNumber;
+
+					if (userInputOptionNumber)
+					{
+						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+						{
+							(*iter)->detach(VCODecorator);
+						}
+					}
+
+					if (ptPlayersPointerList->at(0)->containObserver(VCODecorator))
+						std::cout << "Detach failed! please note !" << endl;
+				}
+			}
+
+			std::cout << "\nWould you like to set Decorators in the next turn? " << std::endl;
+			std::cin >> userInputOptionNumber;
+
+			if (userInputOptionNumber)
+				addObserverOrRemoval = true;
+			else addObserverOrRemoval = false;
+		}
+
+
+
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+			(*iter)->followingTurnAttack();
+		}
+
+		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+		{
+			(*iter)->scoringVictoryCoins();
+		}
+
+		showPlayersAtTurnEnd();
+		gameTurnMarker++;
+
+		system("pause");
+	} while (gameTurnMarker != 10);
+
+}
+
 int main() {
 
+	srand((unsigned)time(NULL));
+	
 	//test11();
 
-	//test12();
+	//test12(); / there exit a sudden exit NOT solved.
 
-	test13();
+	test15();
 
 	//test2();
-	//srand((unsigned)time(NULL));
+	
 
 	//int testNumber= 0;
 
@@ -642,10 +1039,6 @@ int main() {
 	ia >> region2;
 
 	cout << region2.getOwner() << "  " << region2.getRegionID() << endl;*/
-
-
-
-
 
 
 		//Map *map1 = new Map(23, true);

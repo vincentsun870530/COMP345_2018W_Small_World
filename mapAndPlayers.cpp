@@ -1,9 +1,12 @@
 #include "mapAndPlayers.h"
-#include "PlayerObserver.h"
+#include "Observer.h"
+#include "ObserverStatistics.h"
 
 int numberOfPlayers = 0;
 Map * ptPlayersMap = nullptr;
 extern vector<Players *> * ptPlayersPointerList = nullptr;
+extern Observer * ObserverForPlayers = nullptr;
+
 
 mapAndPlayers::mapAndPlayers()
 {
@@ -45,10 +48,25 @@ vector<Players *> *  mapAndPlayers::creatPlayers()
 	return tempPlayersVector;
 }
 
+
 void mapAndPlayers::setupMapAndPlayers()
 {
 	ptPlayersMap = creatMap();
 	ptPlayersPointerList = creatPlayers();
+
+	ObserverForPlayers = new ObserverStatistics(static_cast<int>(ptPlayersPointerList->size()));
+
+	if (ObserverForPlayers == nullptr)
+	{
+		std::cout << "ObserverForPlayers is nullptr " << endl;
+		system("pause");
+		exit(0);
+	}
+		
+	for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+	{
+		ptPlayersMap->getRegion(i)->attach(ObserverForPlayers);
+	}
 }
 
 void mapAndPlayers::printPlayersList(vector<Players *> * const pointerPlayersPointerList) const
