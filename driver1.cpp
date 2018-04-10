@@ -653,45 +653,110 @@ void test15()
 		(*iter)->attach(BGSObserver);
 	}
 
-	int userInputOptionNumber = 0;
+	char userInputOptionNumber;
+	int choose;
 
-	std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? " << std::endl;
-	std::cin >> userInputOptionNumber;
+	// Exception for user input inviliad data
+	// bool express input bad data
+	bool inputBadData;
+	
+	do {
+		try {
+			inputBadData = false;
+			std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+			std::cin >> userInputOptionNumber;
+			choose = static_cast<int> (userInputOptionNumber)-48;
+			if((choose<0)||(choose>1))
+			{
+				
+				throw runtime_error("Exception input should be 0 or 1");
+				
+			}
+			
+				if (choose ==1)
+				{
+					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+					{
+						(*iter)->attach(PDODecorator);
+					}
 
-	if (userInputOptionNumber)
-	{
-		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+					for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+					{
+						ptPlayersMap->getRegion(i)->attach(PDODecorator);
+					}
+				}
+			
+		}catch(runtime_error ex)
 		{
-			(*iter)->attach(PDODecorator);
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ex.what() << endl;
+			inputBadData = true;
 		}
+	} while (inputBadData);
 
-		for (int i = 0; i < ptPlayersMap->getNumRegion(); ++i)
+
+	do {
+		try {
+			inputBadData = false;
+			std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+			std::cin >> userInputOptionNumber;
+			choose = static_cast<int> (userInputOptionNumber) - 48;
+			if ((choose<0) || (choose>1))
+			{
+				
+				throw runtime_error("Exception input should be 0 or 1");
+
+			}
+
+			if (choose ==1)
+			{
+				for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+				{
+					(*iter)->attach(PHODecorator);
+				}
+			}
+		}
+		catch (runtime_error ex)
 		{
-			ptPlayersMap->getRegion(i)->attach(PDODecorator);
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ex.what() << endl;
+			inputBadData = true;
 		}
-	}
+	} while (inputBadData);
 
-	std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? " << std::endl;
-	std::cin >> userInputOptionNumber;
 
-	if (userInputOptionNumber)
-	{
-		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+
+	do {
+		try {
+			inputBadData= false;
+			std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? (Please input 0 or 1) " << std::endl;
+			cin.clear();
+			std::cin >> userInputOptionNumber;
+			choose = static_cast<int> (userInputOptionNumber) - 48;
+			if ((choose<0) || (choose>1))
+			{
+
+				throw runtime_error("Exception input should be 0 or 1");
+
+			}
+			if (choose==1)
+			{
+				for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+				{
+					(*iter)->attach(VCODecorator);
+				}
+			}
+		}
+		catch (runtime_error ex)
 		{
-			(*iter)->attach(PHODecorator);
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << ex.what() << endl;
+			inputBadData = true;
 		}
-	}
-
-	std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? " << std::endl;
-	std::cin >> userInputOptionNumber;
-
-	if (userInputOptionNumber)
-	{
-		for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-		{
-			(*iter)->attach(VCODecorator);
-		}
-	}
+	} while (inputBadData);
 
 	bool addObserverOrRemoval = true;
 
@@ -699,7 +764,7 @@ void test15()
 	for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 	{
 		std::cout << "************************************************************************************ " << endl;
-		std::cout << "this is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
+		std::cout << "This is the attack from player " << (*iter)->get_id_player() << " : " << " \n " << endl;
 		(*iter)->firstTurnAttack();
 	}
 
@@ -714,115 +779,259 @@ void test15()
 
 	gameTurnMarker = 1;
 
+	
 	do
 	{
 		if (addObserverOrRemoval)
 		{
 			if (!(ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
 			{
-				std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? " << std::endl;
-				std::cin >> userInputOptionNumber;
+				do {
+					try {
+						inputBadData = false;
+						std::cout << "\nWould you like adding a player_Domination_Observer_Decorator? (Please input 0 or 1)" << std::endl;
+						std::cin >> userInputOptionNumber;
+						choose = static_cast<int> (userInputOptionNumber) - 48;
+						if ((choose < 0) || (choose > 1))
+						{
 
-				if (userInputOptionNumber)
-				{
-					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-					{
-						(*iter)->attach(PDODecorator);
+							throw runtime_error("Exception input should be 0 or 1");
+
+						}
+						if (choose == 1)
+						{
+							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+							{
+								(*iter)->attach(PDODecorator);
+							}
+						}
 					}
-				}
+					catch (runtime_error ex)
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << ex.what() << endl;
+						inputBadData = true;
+					}
+				} while (inputBadData == true);
 			}
 
 			if (!(ptPlayersPointerList->at(0)->containObserver(PHODecorator)))
 			{
-				std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? " << std::endl;
-				std::cin >> userInputOptionNumber;
+				do {
+					try {
+						inputBadData = false;
+						std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+						std::cin >> userInputOptionNumber;
+						choose = static_cast<int> (userInputOptionNumber) - 48;
+						if ((choose < 0) || (choose > 1))
+						{
 
-				if (userInputOptionNumber)
-				{
-					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-					{
-						(*iter)->attach(PHODecorator);
+							throw runtime_error("Exception input should be 0 or 1");
+
+						}
+						if (choose == 1)
+						{
+							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+							{
+								(*iter)->attach(PHODecorator);
+							}
+						}
 					}
-				}
+					catch (runtime_error ex)
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << ex.what() << endl;
+						inputBadData = true;
+					}
+				} while (inputBadData == true);
 			}
 
 			if (!(ptPlayersPointerList->at(0)->containObserver(VCODecorator)))
 			{
-				std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? " << std::endl;
-				std::cin >> userInputOptionNumber;
+				do {
+					try {
+						inputBadData = false;
+						std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+						std::cin >> userInputOptionNumber;
+						choose = static_cast<int> (userInputOptionNumber) - 48;
+						if ((choose < 0) || (choose > 1))
+						{
+							throw runtime_error("Exception input should be 0 or 1");
 
-				if (userInputOptionNumber)
-				{
-					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-					{
-						(*iter)->attach(VCODecorator);
+						}
+						if (choose == 1)
+						{
+							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+							{
+								(*iter)->attach(VCODecorator);
+							}
+						}
 					}
-				}
+					catch (runtime_error ex)
+					{
+						cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cout << ex.what() << endl;
+						inputBadData = true;
+					}
+				} while (inputBadData == true);
 			}
 
-			std::cout << "\nWould you remove some Decorator ? " << std::endl;
-			std::cin >> userInputOptionNumber;
-
-			if (userInputOptionNumber)
-			{
-				if ((ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
-				{
-					std::cout << "\nWould you like to remove a player_Domination_Observer_Decorator ? " << std::endl;
+			do {
+				try {
+					inputBadData = false;
+					std::cout << "\nWould you remove some Decorator ? (Please input 0 or 1) " << std::endl;
 					std::cin >> userInputOptionNumber;
-
-					if (userInputOptionNumber)
+					choose = static_cast<int> (userInputOptionNumber) - 48;
+					if ((choose < 0) || (choose > 1))
 					{
-						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+						throw runtime_error("Exception input should be 0 or 1");
+
+					}
+					if (choose == 1)
+					{
+						if ((ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
 						{
-							(*iter)->detach(PDODecorator);
+							do {
+								try {
+									inputBadData = false;
+									std::cout << "\nWould you like to remove a player_Domination_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+									std::cin >> userInputOptionNumber;
+									choose = static_cast<int> (userInputOptionNumber) - 48;
+									if ((choose < 0) || (choose > 1))
+									{
+										throw runtime_error("Exception input should be 0 or 1");
+
+									}
+									if (choose == 1)
+									{
+										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+										{
+											(*iter)->detach(PDODecorator);
+										}
+									}
+
+									if (ptPlayersPointerList->at(0)->containObserver(PDODecorator))
+										std::cout << "Detach failed! please note !" << endl;
+								}
+								catch (runtime_error ex)
+								{
+									cin.clear();
+									cin.ignore(numeric_limits<streamsize>::max(), '\n');
+									cout << ex.what() << endl;
+									inputBadData = true;
+								}
+							} while (inputBadData == true);
+						}
+
+						if ((ptPlayersPointerList->at(0)->containObserver(PHODecorator)))
+						{
+							do {
+								try {
+									inputBadData = false;
+									std::cout << "\nWould you like to remove a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+									std::cin >> userInputOptionNumber;
+									choose = static_cast<int> (userInputOptionNumber) - 48;
+									if ((choose < 0) || (choose > 1))
+									{
+										throw runtime_error("Exception input should be 0 or 1");
+
+									}
+
+									if (choose == 1)
+									{
+										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+										{
+											(*iter)->detach(PHODecorator);
+										}
+									}
+
+									if (ptPlayersPointerList->at(0)->containObserver(PHODecorator))
+										std::cout << "Detach failed! please note !" << endl;
+								}
+								catch (runtime_error ex)
+								{
+									cin.clear();
+									cin.ignore(numeric_limits<streamsize>::max(), '\n');
+									cout << ex.what() << endl;
+									inputBadData = true;
+								}
+							} while (inputBadData == true);
+						}
+
+						if ((ptPlayersPointerList->at(0)->containObserver(VCODecorator)))
+						{
+							do {
+								try {
+									inputBadData = false;
+									std::cout << "\nWould you like to remove a victory_Coins_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
+									std::cin >> userInputOptionNumber;
+									choose = static_cast<int> (userInputOptionNumber) - 48;
+									if ((choose < 0) || (choose > 1))
+									{
+										throw runtime_error("Exception input should be 0 or 1");
+
+									}
+									if (choose == 1)
+									{
+										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
+										{
+											(*iter)->detach(VCODecorator);
+										}
+									}
+
+									if (ptPlayersPointerList->at(0)->containObserver(VCODecorator))
+										std::cout << "Detach failed! please note !" << endl;
+								}
+								catch (runtime_error ex)
+								{
+									cin.clear();
+									cin.ignore(numeric_limits<streamsize>::max(), '\n');
+									cout << ex.what() << endl;
+									inputBadData = true;
+								}
+							} while (inputBadData == true);
 						}
 					}
-
-					if (ptPlayersPointerList->at(0)->containObserver(PDODecorator))
-						std::cout << "Detach failed! please note !" << endl;
 				}
-
-				if ((ptPlayersPointerList->at(0)->containObserver(PHODecorator)))
+				catch (runtime_error ex)
 				{
-					std::cout << "\nWould you like to remove a player_Hands_Observer_Decorator ? " << std::endl;
-					std::cin >> userInputOptionNumber;
-
-					if (userInputOptionNumber)
-					{
-						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-						{
-							(*iter)->detach(PHODecorator);
-						}
-					}
-
-					if (ptPlayersPointerList->at(0)->containObserver(PHODecorator))
-						std::cout << "Detach failed! please note !" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << ex.what() << endl;
+					inputBadData = true;
 				}
+			} while (inputBadData == true);
+			
+			do {
+				try {
+					inputBadData = false;
+					std::cout << "\nWould you like to set Decorators in the next turn? (Please input 0 or 1)" << std::endl;
+					std::cin >> userInputOptionNumber;
+					choose = static_cast<int> (userInputOptionNumber) - 48;
+					if ((choose < 0) || (choose > 1))
+					{
+						throw runtime_error("Exception input should be 0 or 1");
 
-				if ((ptPlayersPointerList->at(0)->containObserver(VCODecorator)))
+					}
+					if (choose == 1) {
+						addObserverOrRemoval = true;
+					}
+					else
+					{
+						addObserverOrRemoval = false;
+					}
+				}
+				catch (runtime_error ex)
 				{
-					std::cout << "\nWould you like to remove a victory_Coins_Observer_Decorator ? " << std::endl;
-					std::cin >> userInputOptionNumber;
-
-					if (userInputOptionNumber)
-					{
-						for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
-						{
-							(*iter)->detach(VCODecorator);
-						}
-					}
-
-					if (ptPlayersPointerList->at(0)->containObserver(VCODecorator))
-						std::cout << "Detach failed! please note !" << endl;
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					cout << ex.what() << endl;
+					inputBadData = true;
 				}
-			}
-
-			std::cout << "\nWould you like to set Decorators in the next turn? " << std::endl;
-			std::cin >> userInputOptionNumber;
-
-			if (userInputOptionNumber)
-				addObserverOrRemoval = true;
-			else addObserverOrRemoval = false;
+			} while (inputBadData == true);
 		}
 
 

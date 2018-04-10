@@ -736,22 +736,44 @@ int Players::getFirstTimeAttackRegionFromUser()
 
 	showAvailableAttackRegion(tempRegionIDVector);
 
-	int userInputRegionID = -1;
-	bool repeat = false;
+	int userInputRegionID;
+	char userChoose;
+	bool repeat;
 	do
 	{
+
 		repeat = false;
 		std::cout << "Please input the ID your desired region to attack which is from above available list. " << endl;
 
-		if (pt_strategy_) userInputRegionID = pt_strategy_->strategyRegionSelection(this); // strategy for region selection
-		else std::cin >> userInputRegionID;
-
-		if (!containRegionID(&tempRegionIDVector, userInputRegionID))
+		if (pt_strategy_)
 		{
-			repeat = true;
-			std::cout << "The region ID you input is not in the current list , please check and input again. " << endl;
+			userInputRegionID = pt_strategy_->strategyRegionSelection(this);
+		} // strategy for region selection
+		else {
+			cin >> userChoose;
+			try {
+				userInputRegionID = static_cast<int> (userChoose) - 48;
+				cout << userInputRegionID << endl;
+				if (userInputRegionID < 0 || userInputRegionID > 48)
+				{
+					throw runtime_error("Exception and input a number!");
+				}
+
+				if (!containRegionID(&tempRegionIDVector, userInputRegionID))
+				{
+					repeat = true;
+					std::cout << "The region ID you input is not in the current list , please check and input again. " << endl;
+				}
+			}
+			catch (runtime_error ex)
+			{
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << ex.what() << endl;
+				repeat = true;
+			}
 		}
-	} while(repeat) ;
+	} while (repeat);
 
 	return userInputRegionID;
 }
@@ -762,20 +784,39 @@ int Players::getAttackRegionFromUser()
 
 	showAvailableAttackRegion(tempRegionIDVector);
 
-	int userInputRegionID = -1;
-	bool repeat = false;
+	int userInputRegionID;
+	char userChoose;
+	bool repeat;
 	do
 	{
+		cin.clear();
 		repeat = false;
 		std::cout << "Please input the ID your desired region to attack which is from above available list. " << endl;
-		if (pt_strategy_) 
-			userInputRegionID = pt_strategy_->strategyRegionSelection(this); // strategy for region selection
-		else std::cin >> userInputRegionID;
+		if (pt_strategy_) {
+			userInputRegionID = pt_strategy_->strategyRegionSelection(this);
+		}// strategy for region selection
+		else {
+			cin >> userChoose;
+			try {
+				userInputRegionID = static_cast<int> (userChoose) - 48;
+				if (userInputRegionID < 0 || userInputRegionID > 48)
+				{
+					throw runtime_error("Exception and input a number!");
+				}
 
-		if (!containRegionID(&tempRegionIDVector, userInputRegionID))
-		{
-			repeat = true;
-			std::cout << "The region ID you input is not in the current list , please check and input again. " << endl;
+				if (!containRegionID(&tempRegionIDVector, userInputRegionID))
+				{
+					repeat = true;
+					std::cout << "The region ID you input is not in the current list , please check and input again. " << endl;
+				}
+			}
+			catch (runtime_error ex)
+			{
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << ex.what() << endl;
+				repeat = true;
+			}
 		}
 	} while (repeat);
 

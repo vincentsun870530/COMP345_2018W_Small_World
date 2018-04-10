@@ -25,7 +25,7 @@ Map* mapAndPlayers::creatMap()
 	do {
 		try {
 			goInCatchBlock = false;
-			cout << "Please input the number of players:  " << endl;
+			cout << "Please input the number of players (2-5):  " << endl;
 			cin >> numberOfPlayers;
 			if((numberOfPlayers < 2) || (numberOfPlayers > 5))
 			{
