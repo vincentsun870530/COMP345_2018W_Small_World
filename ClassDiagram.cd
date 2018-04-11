@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AggressiveStrategy">
+    <Position X="3.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAQAAhAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>AggressiveStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Alchemist">
+    <Position X="35.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QQAAAAAAEAAAAAAAAAAAAAAAAAAAAAAABAIAAAAAAAA=</HashCode>
+      <FileName>badges\Alchemist.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Badges">
+    <Position X="34" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAUAAAAEAKABAQBEAABAAEACSkhAIaBCGAACA=</HashCode>
+      <FileName>badges\Badges.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Players">
+    <Position X="71.5" Y="0.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>E0XhEBhUU8VFdGycijqoBiCR4IulLW+nTc+j9YK4i5k=</HashCode>
+      <FileName>Players.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Amazons">
+    <Position X="2.5" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAACAAAAAAAAAQAAAAAABAgAAAAAAAA=</HashCode>
+      <FileName>racebanner\Amazons.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="basicGameStasticsObserver">
+    <Position X="1.25" Y="26.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAACAAAAAAAAAGAAAAAAAEAAA=</HashCode>
+      <FileName>basicGameStasticsObserver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Berserk">
+    <Position X="3.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAQAAQAAAAAAABAIAAAAAAAA=</HashCode>
+      <FileName>badges\Berserk.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bivouacking">
+    <Position X="6.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAEBEAABEAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Bivouacking.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Coins">
+    <Position X="75.25" Y="8.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAIAAAACAEAAgAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>coinsandtokens\Coins.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Commando">
+    <Position X="9.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAABEAABAAIAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Commando.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DeckCard">
+    <Position X="82.25" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAICAAAAAAAAAAQCACAAAGAAAAAAAAAAAAAAEAAEIA=</HashCode>
+      <FileName>DeckCard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DefensiveStrategy">
+    <Position X="0.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAQAAAAAAAAAAAAAAAAACAAABAAAAgAAAA=</HashCode>
+      <FileName>DefensiveStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dice">
+    <Position X="75" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAQAEAIAACAAAAAAAAAAAAAIhoCAAEAAAA=</HashCode>
+      <FileName>Dice.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Diplomat">
+    <Position X="13" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAUAAAAAAAAAAABEAABEAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Diplomat.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dragon">
+    <Position X="1" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAABAAABAAAAAAAAAAAAAAABAEEAAAAAAA=</HashCode>
+      <FileName>gamepieces\Dragon.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragonMaster">
+    <Position X="16.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAUAAAAAAAAAAABEAABAAAAAAABAIAACAAASA=</HashCode>
+      <FileName>badges\DragonMaster.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dwarves">
+    <Position X="5.75" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAIQAAA=</HashCode>
+      <FileName>racebanner\Dwarves.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Elves">
+    <Position X="9" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAABAACAAAAAEAABAAABAACRAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Elves.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Encampments">
+    <Position X="3.75" Y="14.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAEAQAABAEEAAAAAAA=</HashCode>
+      <FileName>gamepieces\Encampments.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Flying">
+    <Position X="19.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAACABEAADAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Flying.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Forest">
+    <Position X="22.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAUAAAAAAAAAAABEAABAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Forest.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fortesses">
+    <Position X="7" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAACAAAAAAAAAAAAAAABAEEAAAAQAA=</HashCode>
+      <FileName>gamepieces\Fortesses.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fortified">
+    <Position X="26" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAUAACAAAAAAAABEAABAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Fortified.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GamePiece">
+    <Position X="10.25" Y="11.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAQDAAAEAAAAAAAAAAAAAAABAEEAAAAAAA=</HashCode>
+      <FileName>gamepieces\GamePiece.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ghouls">
+    <Position X="12.25" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAQQAARAAAAAACAAAAAEAABAAABAAQBAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Ghouls.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Giants">
+    <Position X="15.5" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAASQAARAAAAAACEAAAAEAABAAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Giants.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Halflings">
+    <Position X="18.75" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAQQAARAAAAAECAAAAAEAABAAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Halflings.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Heroes">
+    <Position X="9.75" Y="14.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAQBAEEAAAAAAg=</HashCode>
+      <FileName>gamepieces\Heroes.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Heroic">
+    <Position X="29.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAACBEAABAAAAAAABBIAACAAACA=</HashCode>
+      <FileName>badges\Heroic.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hill">
+    <Position X="32.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAUAAAAAAgAAAABEAABAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Hill.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Humans">
+    <Position X="22" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAAAAACAAAAAEIABAAABAAABAAAAAQAAAA=</HashCode>
+      <FileName>racebanner\Humans.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LairFromTroll">
+    <Position X="12.5" Y="14.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABABEAAAAAAA=</HashCode>
+      <FileName>gamepieces\LairFromTroll.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LostTribes">
+    <Position X="25.25" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAAAAACAAAIAEAABEAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\LostTribes.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Map">
+    <Position X="77.25" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAJAAIBkAAQAACAIAYAAEJAAAACQAQAQIBAAAAAA=</HashCode>
+      <FileName>Map.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mapAndPlayers">
+    <Position X="75.25" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAAAAAAAAAAAAAACgAAAEgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>mapAndPlayers.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapLoader">
+    <Position X="79.75" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAQAAAAAAAAAAAAQBAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MapLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Merchant">
+    <Position X="39" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAAhEAABAAAgAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Merchant.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ModerateStrategy">
+    <Position X="6" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAQAAAAAAAAAAAAAAAAACAAAEAAAAAIAAA=</HashCode>
+      <FileName>ModerateStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mountains">
+    <Position X="15.5" Y="14.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAICBAAAAAAAAAAAAAAAAAAABAEEAAAAAAA=</HashCode>
+      <FileName>gamepieces\Mountains.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mounted">
+    <Position X="42.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAJUAAAAAAAAAAABEAABAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Mounted.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Observer">
+    <Position X="13.25" Y="23.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAABICAAAAAAQAAAAAAAAAAECAA=</HashCode>
+      <FileName>Observer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObserverDecorator">
+    <Position X="9.25" Y="26.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAACAAEQAg=</HashCode>
+      <FileName>ObserverDecorator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObserverPhase">
+    <Position X="17.5" Y="26.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIACAAABAAAAAAgACAACABgAAAEAABGAAAAEEEABI=</HashCode>
+      <FileName>ObserverPhase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObserverStatistics">
+    <Position X="21" Y="26.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACACAAAAEAAAAAAAAAAEAAA=</HashCode>
+      <FileName>ObserverStatistics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Orcs">
+    <Position X="28.5" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAQRAAAAAACAAAAAEAIBAAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Orcs.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="pickupRacePower">
+    <Position X="77.5" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAhAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>pickupRacePower.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pillaging">
+    <Position X="45.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAABEAABAIAAACABAIAACAAACA=</HashCode>
+      <FileName>badges\Pillaging.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="playerDominationObserverDecorator">
+    <Position X="4.5" Y="29.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAABAAIACACAAAAAAAAAAAAAgAEAAA=</HashCode>
+      <FileName>playerDominationObserverDecorator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="playerHandsObserverDecorator">
+    <Position X="9" Y="29.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAIAEAgACAAAAAAAACAACACAAAAAAAAAAFAEgAA=</HashCode>
+      <FileName>playerHandsObserverDecorator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerObserver">
+    <Position X="24.5" Y="26.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAAgAEABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PlayerObserver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RaceBanner">
+    <Position X="25.25" Y="11.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABYAQQAA5AAABABCAACAAGIBRAAABCSEhAKIBACAAAA=</HashCode>
+      <FileName>racebanner\RaceBanner.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RandomStrategy">
+    <Position X="8.75" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAUAAAAQIAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>RandomStrategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ratmen">
+    <Position X="31.75" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAACAAACAAAAAEAABAAIBAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Ratmen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Region">
+    <Position X="68" Y="0.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>06MKoGAhwyFgmASdAQ0YoUEgAAHQkBDAyeFY0zFQVJg=</HashCode>
+      <FileName>Region.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Seafaring">
+    <Position X="48.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAABEAQBAAAAAAAFAIAACAAACA=</HashCode>
+      <FileName>badges\Seafaring.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Skeletons">
+    <Position X="35" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>BEAAQQAARAAAAAACAAAAAEAABAAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Skeletons.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sorceres">
+    <Position X="38.25" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAQAAACAAgAAEAABAAABAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Sorceres.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spirit">
+    <Position X="52" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAQAAAAAAAAABEAABAAAAAAABAIBACAAACA=</HashCode>
+      <FileName>badges\Spirit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="startupPhase">
+    <Position X="79.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAACCAAAAAEAAIgAAAAgAAACAAAgAAAAA=</HashCode>
+      <FileName>startupPhase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Stout">
+    <Position X="55.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUBAAAAAAAAAABEAABAAAAAAgBAIAACAAACA=</HashCode>
+      <FileName>badges\Stout.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Strategy">
+    <Position X="4.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAQAAAAQAAAAAAAAAAAAAAAAACAAAAAAABAAAAA=</HashCode>
+      <FileName>Strategy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Swamp">
+    <Position X="58.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAAADEAABAAAAAAABgIAACAAACA=</HashCode>
+      <FileName>badges\Swamp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Token">
+    <Position X="75.25" Y="11" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACEAABAAAAAQAAAAAAAARAAA=</HashCode>
+      <FileName>coinsandtokens\Token.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tritons">
+    <Position X="41.5" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAAAAACAABAAEAABAAARAAABAAAAAAAAAA=</HashCode>
+      <FileName>racebanner\Tritons.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Trolls">
+    <Position X="44.75" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAAAAAACAAAAAEAABAAABAAABAAAABAAAAE=</HashCode>
+      <FileName>racebanner\Trolls.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TwoHolesInTheGround">
+    <Position X="18.5" Y="14.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAABAAAAAAAAAAAAAAAAAAABAEGAAAAAAA=</HashCode>
+      <FileName>gamepieces\TwoHolesInTheGround.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Underworld">
+    <Position X="61.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAACAEAAAABEAABAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Underworld.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="victoryCoinsObserverDecorator">
+    <Position X="13.25" Y="29.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAAAAAAEEAA=</HashCode>
+      <FileName>victoryCoinsObserverDecorator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wealthy">
+    <Position X="65" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAUAAAAAAAAAgABEAAJAAAAAAABAIAACAAACA=</HashCode>
+      <FileName>badges\Wealthy.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Wizards">
+    <Position X="48" Y="19.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQQAARAgAAAACAAAAAEAABAAABAAABAQAAAAAAAA=</HashCode>
+      <FileName>racebanner\Wizards.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
