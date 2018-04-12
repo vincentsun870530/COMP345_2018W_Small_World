@@ -653,8 +653,7 @@ void test15()
 		(*iter)->attach(BGSObserver);
 	}
 
-	char userInputOptionNumber;
-	int choose;
+	int userInputOptionNumber;
 
 	// Exception for user input inviliad data
 	// bool express input bad data
@@ -665,15 +664,18 @@ void test15()
 			inputBadData = false;
 			std::cout << "\nWould you like adding a player_Domination_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 			std::cin >> userInputOptionNumber;
-			choose = static_cast<int> (userInputOptionNumber)-48;
-			if((choose<0)||(choose>1))
+			if (cin.fail())
+			{
+				throw runtime_error("Exception please input a number");
+			}
+			if((userInputOptionNumber<0)||(userInputOptionNumber>1))
 			{
 				
 				throw runtime_error("Exception input should be 0 or 1");
 				
 			}
 			
-				if (choose ==1)
+				if (userInputOptionNumber ==1)
 				{
 					for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 					{
@@ -701,15 +703,18 @@ void test15()
 			inputBadData = false;
 			std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 			std::cin >> userInputOptionNumber;
-			choose = static_cast<int> (userInputOptionNumber) - 48;
-			if ((choose<0) || (choose>1))
+			if (cin.fail())
+			{
+				throw runtime_error("Exception please input a number");
+			}
+			if ((userInputOptionNumber<0) || (userInputOptionNumber>1))
 			{
 				
 				throw runtime_error("Exception input should be 0 or 1");
 
 			}
 
-			if (choose ==1)
+			if (userInputOptionNumber ==1)
 			{
 				for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 				{
@@ -734,14 +739,17 @@ void test15()
 			std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? (Please input 0 or 1) " << std::endl;
 			cin.clear();
 			std::cin >> userInputOptionNumber;
-			choose = static_cast<int> (userInputOptionNumber) - 48;
-			if ((choose<0) || (choose>1))
+			if (cin.fail())
+			{
+				throw runtime_error("Exception please input a number");
+			}
+			if ((userInputOptionNumber<0) || (userInputOptionNumber>1))
 			{
 
 				throw runtime_error("Exception input should be 0 or 1");
 
 			}
-			if (choose==1)
+			if (userInputOptionNumber ==1)
 			{
 				for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 				{
@@ -791,14 +799,17 @@ void test15()
 						inputBadData = false;
 						std::cout << "\nWould you like adding a player_Domination_Observer_Decorator? (Please input 0 or 1)" << std::endl;
 						std::cin >> userInputOptionNumber;
-						choose = static_cast<int> (userInputOptionNumber) - 48;
-						if ((choose < 0) || (choose > 1))
+						if (cin.fail())
+						{
+							throw runtime_error("Exception please input a number");
+						}
+						if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 						{
 
 							throw runtime_error("Exception input should be 0 or 1");
 
 						}
-						if (choose == 1)
+						if (userInputOptionNumber == 1)
 						{
 							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 							{
@@ -823,14 +834,17 @@ void test15()
 						inputBadData = false;
 						std::cout << "\nWould you like adding a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 						std::cin >> userInputOptionNumber;
-						choose = static_cast<int> (userInputOptionNumber) - 48;
-						if ((choose < 0) || (choose > 1))
+						if (cin.fail())
+						{
+							throw runtime_error("Exception please input a number");
+						}
+						if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 						{
 
 							throw runtime_error("Exception input should be 0 or 1");
 
 						}
-						if (choose == 1)
+						if (userInputOptionNumber == 1)
 						{
 							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 							{
@@ -855,13 +869,16 @@ void test15()
 						inputBadData = false;
 						std::cout << "\nWould you like adding a victory_Coins_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 						std::cin >> userInputOptionNumber;
-						choose = static_cast<int> (userInputOptionNumber) - 48;
-						if ((choose < 0) || (choose > 1))
+						if(cin.fail())
+						{
+							throw runtime_error("Exception please input a number");
+						}
+						if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 						{
 							throw runtime_error("Exception input should be 0 or 1");
 
 						}
-						if (choose == 1)
+						if (userInputOptionNumber == 1)
 						{
 							for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 							{
@@ -884,13 +901,16 @@ void test15()
 					inputBadData = false;
 					std::cout << "\nWould you remove some Decorator ? (Please input 0 or 1) " << std::endl;
 					std::cin >> userInputOptionNumber;
-					choose = static_cast<int> (userInputOptionNumber) - 48;
-					if ((choose < 0) || (choose > 1))
+					if (cin.fail())
+					{
+						throw runtime_error("Exception please input a number");
+					}
+					if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 					{
 						throw runtime_error("Exception input should be 0 or 1");
 
 					}
-					if (choose == 1)
+					if (userInputOptionNumber == 1)
 					{
 						if ((ptPlayersPointerList->at(0)->containObserver(PDODecorator)))
 						{
@@ -899,13 +919,16 @@ void test15()
 									inputBadData = false;
 									std::cout << "\nWould you like to remove a player_Domination_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 									std::cin >> userInputOptionNumber;
-									choose = static_cast<int> (userInputOptionNumber) - 48;
-									if ((choose < 0) || (choose > 1))
+									if (cin.fail())
+									{
+										throw runtime_error("Exception please input a number");
+									}
+									if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 									{
 										throw runtime_error("Exception input should be 0 or 1");
 
 									}
-									if (choose == 1)
+									if (userInputOptionNumber == 1)
 									{
 										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 										{
@@ -933,14 +956,17 @@ void test15()
 									inputBadData = false;
 									std::cout << "\nWould you like to remove a player_Hands_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 									std::cin >> userInputOptionNumber;
-									choose = static_cast<int> (userInputOptionNumber) - 48;
-									if ((choose < 0) || (choose > 1))
+									if (cin.fail())
+									{
+										throw runtime_error("Exception please input a number");
+									}
+									if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 									{
 										throw runtime_error("Exception input should be 0 or 1");
 
 									}
 
-									if (choose == 1)
+									if (userInputOptionNumber == 1)
 									{
 										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 										{
@@ -968,13 +994,16 @@ void test15()
 									inputBadData = false;
 									std::cout << "\nWould you like to remove a victory_Coins_Observer_Decorator ? (Please input 0 or 1)" << std::endl;
 									std::cin >> userInputOptionNumber;
-									choose = static_cast<int> (userInputOptionNumber) - 48;
-									if ((choose < 0) || (choose > 1))
+									if (cin.fail())
+									{
+										throw runtime_error("Exception please input a number");
+									}
+									if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 									{
 										throw runtime_error("Exception input should be 0 or 1");
 
 									}
-									if (choose == 1)
+									if (userInputOptionNumber == 1)
 									{
 										for (auto iter = ptPlayersPointerList->begin(); iter != ptPlayersPointerList->end(); ++iter)
 										{
@@ -1010,13 +1039,16 @@ void test15()
 					inputBadData = false;
 					std::cout << "\nWould you like to set Decorators in the next turn? (Please input 0 or 1)" << std::endl;
 					std::cin >> userInputOptionNumber;
-					choose = static_cast<int> (userInputOptionNumber) - 48;
-					if ((choose < 0) || (choose > 1))
+					if (cin.fail())
+					{
+						throw runtime_error("Exception please input a number");
+					}
+					if ((userInputOptionNumber < 0) || (userInputOptionNumber > 1))
 					{
 						throw runtime_error("Exception input should be 0 or 1");
 
 					}
-					if (choose == 1) {
+					if (userInputOptionNumber == 1) {
 						addObserverOrRemoval = true;
 					}
 					else

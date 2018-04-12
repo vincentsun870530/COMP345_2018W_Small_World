@@ -27,6 +27,10 @@ Map* mapAndPlayers::creatMap()
 			goInCatchBlock = false;
 			cout << "Please input the number of players (2-5):  " << endl;
 			cin >> numberOfPlayers;
+			if(cin.fail())
+			{
+				throw runtime_error("Exception Input should be a number");
+			}
 			if((numberOfPlayers < 2) || (numberOfPlayers > 5))
 			{
 				throw runtime_error("Exception Input be a number and >=2 or <=5");

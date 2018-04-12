@@ -13,6 +13,10 @@ int get_correct_inputNumberOfChoice(int i, int k) // globle function
 			inputIsNotCorrect = false;
 			cout << "Please input number from between  " << i << " and " << k << " " << endl;
 			cin >> inputNumber;
+			if(cin.fail())
+			{
+				throw runtime_error("Exception input need a number");
+			}
 			if((inputNumber < i) || (inputNumber > k))
 			{
 				throw runtime_error("Exception input should be a number and >=" + to_string(i) + " or <=" + to_string(k));

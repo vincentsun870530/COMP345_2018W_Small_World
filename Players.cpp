@@ -737,7 +737,6 @@ int Players::getFirstTimeAttackRegionFromUser()
 	showAvailableAttackRegion(tempRegionIDVector);
 
 	int userInputRegionID;
-	char userChoose;
 	bool repeat;
 	do
 	{
@@ -750,11 +749,10 @@ int Players::getFirstTimeAttackRegionFromUser()
 			userInputRegionID = pt_strategy_->strategyRegionSelection(this);
 		} // strategy for region selection
 		else {
-			cin >> userChoose;
+			cin >> userInputRegionID;
 			try {
-				userInputRegionID = static_cast<int> (userChoose) - 48;
-				cout << userInputRegionID << endl;
-				if (userInputRegionID < 0 || userInputRegionID > 48)
+
+				if (cin.fail())
 				{
 					throw runtime_error("Exception and input a number!");
 				}
@@ -785,7 +783,6 @@ int Players::getAttackRegionFromUser()
 	showAvailableAttackRegion(tempRegionIDVector);
 
 	int userInputRegionID;
-	char userChoose;
 	bool repeat;
 	do
 	{
@@ -796,13 +793,13 @@ int Players::getAttackRegionFromUser()
 			userInputRegionID = pt_strategy_->strategyRegionSelection(this);
 		}// strategy for region selection
 		else {
-			cin >> userChoose;
+			cin >> userInputRegionID;
 			try {
-				userInputRegionID = static_cast<int> (userChoose) - 48;
-				if (userInputRegionID < 0 || userInputRegionID > 48)
+				if (cin.fail())
 				{
 					throw runtime_error("Exception and input a number!");
 				}
+
 
 				if (!containRegionID(&tempRegionIDVector, userInputRegionID))
 				{
